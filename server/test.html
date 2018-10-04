@@ -78,26 +78,35 @@ var field = document.getElementById('message'),
 	sockId = false;
 
 sock.onopen = function () {
-	appendMessage('system', 'Connected! Welcome to SockJS chat demo.');
+	appendMessage('system', 'Connected! Welcome to SockJS chat demo.')
 };
 
+sock.onclose = function(e){
+	appendMessage('system', 'Server disconnected!')
+}
+
+sock.onerror = function(e){
+	console.error(e)
+	appendMessage('system', 'Error!')
+}
+
 sock.onmessage = function (e) {
-	var data = JSON.parse(e.data);
+	var data = JSON.parse(e.data)
 
 	switch ( data.type ) {
 		case 'newUser':
-			appendMessage('system', 'A new user has joined');
-			break;
+			appendMessage('system', 'A new user has joined')
+			break
 		case 'message':
-			appendMessage('message', data.message, data.id);
-			break;
+			appendMessage('message', data.message, data.id)
+			break
 		case 'history':
-			appendMessage('message', data.message);
-			sockId = data.id;
-			break;
+			appendMessage('message', data.message)
+			sockId = data.id
+			break
 		case 'userLeft':
-			appendMessage('system', 'A user has left');
-			break;
+			appendMessage('system', 'A user has left')
+			break
 	}
 }
 
