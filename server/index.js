@@ -25,11 +25,19 @@ function broadcast (message, exclude) {
 let onConnection = (conn) => {
   clients[conn.id] = conn;
   broadcast({ type: 'newUser' }, conn.id);
-	whisper(conn.id, { type: 'history', message: buffer, id: conn.id });
+  whisper(conn.id, { type: 'history', message: buffer, id: conn.id });
 
 	conn.on('data', function onDataCB (data) {
-		data = JSON.parse(data);
-
+		try {
+			data = JSON.parse(data);
+		}
+		catch(err){
+			// console.error( err )
+			// clients[conn.id].write( JSON.stringify(message) );
+			whisper(conn.id, { type: 'error', message: 'error!', id: conn.id });
+			return
+		}
+		
 		if ( data.type == 'text' ) {
 			if ( !data.message ) return;
 
@@ -46,7 +54,6 @@ let onConnection = (conn) => {
 
 	conn.on('close', function onCloseCB () {
 		delete clients[conn.id];
-
 		broadcast({ type: 'userLeft' });
 	});
 }
