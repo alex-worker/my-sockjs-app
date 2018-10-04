@@ -1,11 +1,10 @@
 const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const WorkboxWebPackPlugin = require('workbox-webpack-plugin')
 
 module.exports = {
   mode: 'development',
-  entry: './client/index.js',
+  entry: './src/index.js',
   output: {
     path: path.join(__dirname, 'build'),
     filename: 'bundle.js',
@@ -42,13 +41,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['build']),
     new HtmlWebPackPlugin({
-      template: './client/index.html',
+      template: './src/index.html',
       filename: './index.html',
-    }),
-    new WorkboxWebPackPlugin.GenerateSW({
-      swDest: 'serviceWorker.js',
-      clientsClaim: true,
-      skipWaiting: true,
     }),
   ],
 }
