@@ -1,12 +1,19 @@
 'use strict';
 
+const json_schema= require('../common/schema/webchat-srv.json')
 const http = require('http')
-
-// const Server = require('./server')
 
 const server = http.createServer()
 server.listen(9999, '0.0.0.0')
 console.log(' [*] Listening on 0.0.0.0:9999')
+
+const Ajv = require('ajv')
+const ajv = new Ajv({
+	allErrors: true,
+	verbose:   true,
+})
+
+const validate = ajv.compile(json_schema)
 
 function whisper (id, message) {
 	if ( !clients[id] ) return;
@@ -38,6 +45,17 @@ let onConnection = (conn) => {
 			return
 		}
 		
+		var valid = validate(data)
+		if (valid) {
+			// console.log('Valid!');
+		}
+		else {
+			console.log( data );
+			console.log('Invalid: ' + ajv.errorsText(validate.errors));
+			whisper(conn.id, { type: 'error', message: ajv.errorsText(validate.errors), id: conn.id });
+			return
+		}
+
 		if ( data.type == 'text' ) {
 			if ( !data.message ) return;
 

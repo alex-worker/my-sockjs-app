@@ -6,7 +6,9 @@ Some websocket application...
 
 - react
 - socksJS-client
+- Ajv
 
 ## server
 
 - socksJS
+- Ajv

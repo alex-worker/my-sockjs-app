@@ -79,6 +79,10 @@ var field = document.getElementById('message'),
 
 sock.onopen = function () {
 	appendMessage('system', 'Connected! Welcome to SockJS chat demo.')
+	sock.send(JSON.stringify({
+		type: 'text',
+		message: 'hello!'
+	}));
 };
 
 sock.onclose = function(e){
@@ -92,6 +96,7 @@ sock.onerror = function(e){
 
 sock.onmessage = function (e) {
 	var data = JSON.parse(e.data)
+	console.log( data )
 
 	switch ( data.type ) {
 		case 'newUser':
@@ -99,6 +104,9 @@ sock.onmessage = function (e) {
 			break
 		case 'message':
 			appendMessage('message', data.message, data.id)
+			break
+		case 'error':
+			appendMessage('system', 'Error! '+data.message)
 			break
 		case 'history':
 			appendMessage('message', data.message)

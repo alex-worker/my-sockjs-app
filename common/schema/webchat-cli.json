@@ -1,0 +1,19 @@
+{
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "type": {
+            "enum": [
+              "newUser",
+              "message",
+              "error",
+              "history",
+              "userLeft"
+            ]
+        },
+        "message": { "type":"string" }
+    },
+    "required":[
+        "type"
+    ]
+}

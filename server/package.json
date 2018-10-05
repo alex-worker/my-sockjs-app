@@ -10,6 +10,7 @@
     "start": "nodemon index.js"
   },
   "dependencies": {
+    "ajv": "^6.5.4",
     "sockjs": "^0.3.19"
   },
   "devDependencies": {
