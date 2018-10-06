@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 
 class Login extends React.Component {
     
@@ -7,13 +8,11 @@ class Login extends React.Component {
     }
 
     onSubmit = (event) => {
-        // console.log(event.target)
-        event.preventDefault();
+        this.props.onSubmit( this.state.username )
+        event.preventDefault()
     }
 
     onChange = (event) => {
-        // console.log( event.target.name )
-        // console.log( event.target.value )
         this.setState( {username:event.target.value })
     }
 
@@ -26,6 +25,11 @@ class Login extends React.Component {
             </form>
         </div>
     }
+}
+
+Login.propTypes = {
+        // children: PropTypes.any, 
+        onSubmit: PropTypes.func 
 }
 
 export default Login

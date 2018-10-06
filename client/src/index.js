@@ -23,11 +23,15 @@ import Login from './pages/Login'
 
 // let CurrPage = Login
 
+const tryConnect = ( username ) => {
+    console.log( 'index try connect:' + username )
+}
+
 import './index.scss'
 import Footer from './layouts/Footer';
 const App = () => (
     <div>
-    <Login />
+    <Login onSubmit={tryConnect} />
     <Footer />
     </div>
 );
