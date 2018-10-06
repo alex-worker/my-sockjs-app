@@ -1,10 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
-import About from './pages/About'
+// import {BrowserRouter as Router, Route} from 'react-router-dom'
+// import About from './pages/About'
 import Login from './pages/Login'
 // import Footer from './layouts/Footer'
-
 // import SockJS from 'sockjs-client'
 
 // var sock = new SockJS('http://127.0.0.1:9999/chat')
@@ -22,17 +21,15 @@ import Login from './pages/Login'
 //     console.log('close')
 // }
 
-let CurrPage = Login
+// let CurrPage = Login
 
 import './index.scss'
+import Footer from './layouts/Footer';
 const App = () => (
-    <Router>
-    <>
-    <CurrPage />
-    <Route exact path="/" component={Login} />
-    <Route exact path="/about" component={About} />
-    </>
-    </Router>
+    <div>
+    <Login />
+    <Footer />
+    </div>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));
