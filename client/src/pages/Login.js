@@ -28,8 +28,7 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-        // children: PropTypes.any, 
-        onSubmit: PropTypes.func 
+        onSubmit: PropTypes.func.isRequired
 }
 
 export default Login

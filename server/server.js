@@ -73,10 +73,10 @@ let onConnection = (conn) => {
 
 module.exports = {
 
-    install: function(http_server) {
+    install: function(http_server, bound) {
 
         let my_sockjs = sockjs.createServer()
-        my_sockjs.installHandlers(http_server, {prefix:'/chat'})
+        my_sockjs.installHandlers(http_server, {prefix:bound})
         my_sockjs.on('connection', onConnection )
 
     }

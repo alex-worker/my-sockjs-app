@@ -1,9 +1,11 @@
 'use strict';
 
+const conf = require('./config')
+
 const http = require('http')
 const http_server = http.createServer()
-http_server.listen(9999, '0.0.0.0')
-console.log(' [*] Listening on 0.0.0.0:9999')
+http_server.listen(conf.port, conf.ip)
+console.log(' [*] Listening on '+conf.ip+':'+conf.port)
 
 const Server = require('./server')
-Server.install( http_server )
+Server.install( http_server, conf.bound )
