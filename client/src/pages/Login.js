@@ -18,17 +18,13 @@ class Login extends React.Component {
     onChange = (event) => {
         this.setState( {username:event.target.value })
     }
-
   
-//   justify="center"
-//   alignItems="center"
-
     render() {
         let {username} = this.state;
         return <Grid container direction="column" justify="center" alignItems="center">
             <form onSubmit={this.onSubmit.bind(this)}>
                 <Grid item><TextField label="Name" margin="normal" variant="outlined" name='name' value={username} placeholder='your name please' onChange={this.onChange.bind(this)} /></Grid>
-                <Grid item><Button variant="outlined" color="primary" type='submit' >Go to chat</Button></Grid>
+                <Grid item><Button fullWidth variant="contained" color="primary" type='submit' >Go to chat</Button></Grid>
             </form>
         </Grid>
     }
