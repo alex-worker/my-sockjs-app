@@ -37,10 +37,10 @@ class App extends React.Component {
         this.setState( {mode: 'login', error: 'server closed'} )
     }
 
-    tryConnect() {
+    tryConnect(username) {
 
         console.log( 'try connect ')
-        this.setState( {mode:'loading'} )
+        this.setState( {mode:'loading', username:username} )
         client = new Client( conf.protocol+"://"+conf.ip+':'+conf.port+'/'+conf.bound, this.processClient.bind(this) );
         client.connect();
 
