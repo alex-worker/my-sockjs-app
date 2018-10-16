@@ -6,12 +6,17 @@ export default class Client {
     // conn_http_url - connected url
     // callback - callback function
     // sock - SockJS class
-    // type: close/open/message/error
 
-    getRetJSON(){
+    // callback json type: close/open/message/error
+
+    _getRetJSON(type_mess='message'){
         return {
-            'type':'message'
+            'type':type_mess
         }
+    }
+
+    say( mess ){
+        console.log( 'try say mess:' + mess)
     }
 
     constructor( connect_url, callback ){
@@ -30,77 +35,26 @@ export default class Client {
     }
     
     onOpen(){
-        let ret = this.getRetJSON();
-        ret.type = 'open';
+        let ret = this._getRetJSON('open');
         this.callback_function( ret )
     }
 
     onClose(){
-        let ret = this.getRetJSON();
-        ret.type = 'close';
+        let ret = this._getRetJSON('close');
         this.callback_function( ret )
     }
 
     onMessage(mess){
-        let ret = this.getRetJSON();
-        ret.message = mess
+        let ret = this._getRetJSON();
+        ret.message = mess.data
+        ret.timestamp = mess.timeStamp
         this.callback_function( ret )
     }
 
     onError(){
-        let ret = this.getRetJSON();
+        let ret = this._getRetJSON();
         ret.type = 'error';
         this.callback_function( ret )
     }
 
-    // connect( conn_http_server, bound  ){
-    //     console.log( 'try connect '+ conn_http_server + '/' + bound )
-
-//         let appendMessage = ( nickname, message ) => {
-//             console.log( nickname + ':' + message )
-//         }
-    
-        // let sock = new SockJS('http://127.0.0.1:9999/chat')
-
-//         sock.onopen = function () {
-//             appendMessage('system', 'Connected! Welcome to SockJS chat demo.')
-//             sock.send(JSON.stringify({
-//                 type: 'text',
-//                 message: 'hello!'
-//             }));
-        // }
-
-//         sock.onmessage = function (e) {
-//             var data = JSON.parse(e.data)
-//             console.log( data )
-//         }
-
-//         sock.onclose = function(){
-//             appendMessage('system', 'Server disconnected!')
-//         }
-        
-//         sock.onerror = function(e){
-//             console.error(e)
-//             // appendMessage('system', 'Error!')
-//         }
-        
-    // }
-
 }
-
-// let onOpen = () => {
-//     console.log('open')
-// }
-
-// module.exports = {
-
-//     // connect: function( conn_http_server, bound ) {
-//         // let sock = new SockJS( conn_http_server+'/'+bound  );
-//         // return sock;
-//     // }
-//     install: function(http_server, bound) {
-//         let sock = new SockJS( http_server+'/'+bound  );
-//         sock.on('open', onOpen)
-//     }
-
-// }

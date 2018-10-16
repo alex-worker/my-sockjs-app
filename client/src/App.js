@@ -13,25 +13,36 @@ var client
 class App extends React.Component {
 
     state = {
-        mode: 'login'
-        // mode: 'loading'
+        mode: 'login',
+        error: ''
     }
 
-    // processClient( mess ){
-    //     console.log( mess )
-    // }
+    constructor(){ 
+        super()
+        this.callbackArray = []
+        this.callbackArray['close'] = this.onClose.bind(this)
+    }
 
+    processClient( mess ){
+        if ( this.callbackArray[mess.type] === undefined ) {
+            console.error('unsupported type:' + mess.type )
+            return
+        }
+        this.callbackArray[mess.type]()
+    }
+
+    onClose(){
+        console.log('on close')
+        this.setState( {mode: 'login'} )
+    }
 
     tryConnect() {
 
-        let processClient = (mess) => {
-            console.log( mess )
-        }
-    
         console.log( 'try connect ')
         this.setState( {mode:'loading'} )
-        client = new Client( conf.protocol+"://"+conf.ip+':'+conf.port+'/'+conf.bound, processClient.bind(this) );
+        client = new Client( conf.protocol+"://"+conf.ip+':'+conf.port+'/'+conf.bound, this.processClient.bind(this) );
         client.connect();
+
     }
 
     getCurrentPage( mode ){
@@ -43,7 +54,7 @@ class App extends React.Component {
     }
 
     render() {
-        let {mode} = this.state
+        let { mode } = this.state
         return <>
         <Header />
         <Grid container 
