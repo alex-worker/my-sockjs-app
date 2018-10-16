@@ -7,6 +7,8 @@ import Grid from '@material-ui/core/Grid'
 import conf from '../../common/config'
 import Client from './client'
 
+import Snackbar from '@material-ui/core/Snackbar';
+
 // const client = new Client()
 var client
 
@@ -45,6 +47,10 @@ class App extends React.Component {
         // this.setState( {mode: 'chat', error: ''} )
     }
 
+    onCloseError(){
+        this.setState( {error:''} )
+    }
+
     onClose(){
         console.log('on close')
         this.setState( {mode: 'login', error: 'server closed'} )
@@ -66,7 +72,7 @@ class App extends React.Component {
     }
 
     render() {
-        let { mode } = this.state
+        let { mode, error } = this.state
         return <>
         <Header />
         <Grid container 
@@ -76,6 +82,7 @@ class App extends React.Component {
             className='customDiv'>
         { this.getCurrentPage(mode) }
         </Grid>
+        <Snackbar vertical='bottom' horizontal='center' open={ (error === '')?false:true } message={error} onClose={ this.onCloseError.bind(this) }/>
         <Footer />
         </>
     }
