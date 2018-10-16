@@ -22,6 +22,8 @@ class App extends React.Component {
         super()
         this.callbackArray = []
         this.callbackArray['close'] = this.onClose.bind(this)
+        this.callbackArray['open'] = this.onOpen.bind(this)
+        this.callbackArray['message'] = this.onMessage.bind(this)
     }
 
     processClient( mess ){
@@ -29,7 +31,18 @@ class App extends React.Component {
             console.error('unsupported type:' + mess.type )
             return
         }
-        this.callbackArray[mess.type]()
+        this.callbackArray[mess.type]( mess )
+    }
+
+    onOpen(){
+        console.log('on open')
+        this.setState( {mode: 'chat', error: ''} )
+    }
+
+    onMessage( mess ){
+        console.log('message:')
+        console.log(mess)
+        // this.setState( {mode: 'chat', error: ''} )
     }
 
     onClose(){
@@ -38,12 +51,10 @@ class App extends React.Component {
     }
 
     tryConnect(username) {
-
         console.log( 'try connect ')
         this.setState( {mode:'loading', username:username} )
         client = new Client( conf.protocol+"://"+conf.ip+':'+conf.port+'/'+conf.bound, this.processClient.bind(this) );
         client.connect();
-
     }
 
     getCurrentPage( mode ){
