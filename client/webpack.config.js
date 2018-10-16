@@ -4,10 +4,11 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.js',
+  entry: ['@babel/polyfill', './src/index.js'],
   output: {
     path: path.join(__dirname, 'build'),
     filename: 'bundle.js',
+    chunkFilename: '[name].bundle.js',
   },
   module: {
     rules: [
@@ -22,15 +23,9 @@ module.exports = {
       {
         test: [/\.css$/, /\.scss$/],
         use: [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'css-loader',
-          },
-          {
-            loader: 'sass-loader',
-          },
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          { loader: 'sass-loader' },
         ],
       },
     ],

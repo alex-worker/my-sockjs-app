@@ -32,7 +32,7 @@ let onData = (id,data) => {
         console.error( err )
         return
     }
-    // console.log( id + ' : ' + JSON.stringify(data) )
+    console.log( id + ' : ' + JSON.stringify(data) )
 
     var valid = validate(data)
     if (valid) {
@@ -76,7 +76,7 @@ module.exports = {
     install: function(http_server, bound) {
 
         let my_sockjs = sockjs.createServer()
-        my_sockjs.installHandlers(http_server, {prefix:bound})
+        my_sockjs.installHandlers(http_server, {prefix:'/'+bound})
         my_sockjs.on('connection', onConnection )
 
     }

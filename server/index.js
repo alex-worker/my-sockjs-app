@@ -1,6 +1,6 @@
 'use strict';
 
-const conf = require('./config')
+const conf = require('../common/config')
 
 const http = require('http')
 const http_server = http.createServer()

@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 class Login extends React.Component {
     
     state = {
-        username: 'guest'
+        username: ''
     }
 
     onSubmit = (event) => {
