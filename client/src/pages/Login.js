@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 class Login extends React.Component {
     
     state = {
-        username: ''
+        username: this.props.username
     }
 
     onSubmit = (event) => {
@@ -31,7 +31,8 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-        onSubmit: PropTypes.func.isRequired
+        onSubmit: PropTypes.func.isRequired,
+        username: PropTypes.string
 }
 
 export default Login

@@ -13,6 +13,7 @@ var client
 class App extends React.Component {
 
     state = {
+        username: 'guest',
         mode: 'login',
         error: ''
     }
@@ -33,7 +34,7 @@ class App extends React.Component {
 
     onClose(){
         console.log('on close')
-        this.setState( {mode: 'login'} )
+        this.setState( {mode: 'login', error: 'server closed'} )
     }
 
     tryConnect() {
@@ -47,7 +48,7 @@ class App extends React.Component {
 
     getCurrentPage( mode ){
         if (mode==='login')
-            return <Login onSubmit={this.tryConnect.bind(this)} />
+            return <Login username={this.state.username} onSubmit={this.tryConnect.bind(this)} />
         if (mode==='loading')
             return <Loading />
         return null
