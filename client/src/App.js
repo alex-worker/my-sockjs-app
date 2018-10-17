@@ -17,10 +17,9 @@ class App extends React.Component {
 
     state = {
         username: 'guest',
-        history: [],
-        message: '',
         mode: 'login',
-        error: ''
+        error: '',
+        history: []
     }
 
     constructor(){ 
@@ -37,6 +36,8 @@ class App extends React.Component {
         // message layer:
         this.callbackArray['message'] = this.onMessage.bind(this)
         this.callbackArray['history'] = this.onHistory.bind(this)
+        this.callbackArray['newUser'] = this.onNewUser.bind(this)
+        this.callbackArray['userLeft'] = this.onUserLeft.bind(this)
     }
 
     processClient( mess ){
@@ -64,17 +65,28 @@ class App extends React.Component {
     }
 
     onMessage( mess ){
-        console.log( '---message:')
+        // console.log( '---message:')
+        // console.log( mess )
+        // this.setState( {message: mess.message } )
+        this.chatRef.current.addMessage( mess.id, mess.message )
+    }
+
+    onUserLeft( mess ){
+        // console.log('user left')
         console.log( mess )
-        this.setState( {message: mess.message } )
+        this.onMessage( { id:'system', message:'user left'})
+    }
+
+    onNewUser( mess ){
+        // console.log('new user:')
+        console.log( mess )
+        this.onMessage( { id:'system', message:'new user'} )
     }
 
     onHistory( mess ){
-        console.log( '---history:')
-        console.log( mess.message )
-        // this.setState( {history: mess.message } )
+        // console.log( '---history:')
+        // console.log( mess.message )
         this.chatRef.current.setHistory( mess.message )
-        // console.log( this.chatRef )
     }
 
     tryConnect(username) {
@@ -90,7 +102,7 @@ class App extends React.Component {
         if (mode==='loading')
             return <Loading />
         if (mode==='chat')
-            return <Chat ref={this.chatRef} />
+            return <Chat ref={this.chatRef} history={this.state.history} />
         console.error( 'unsupported mode: '+mode)
         return null
     }

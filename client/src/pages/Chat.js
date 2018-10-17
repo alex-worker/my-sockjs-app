@@ -5,27 +5,42 @@ export default class Chat extends React.Component {
 
     state = {
         history: [],
-        message: ''
+        // message: ''
     }
 
     // constructor(){
         // super()
-        // this.myRef = React.createRef();
+        // this.logList = React.createRef()
     // }
 
     render() {
         let { history } = this.state
-        let history_show = history.join(' ')
-        // console.log( "Chat:" )
-        // console.log( this.state )
-        return <div>{ history_show }</div>
+        console.log( 'render history')
+        console.log( history )
+        return <div id='my_list'>{
+            history.map( (mess,i) => {
+                return <div key={i}>{mess}</div>
+            })
+        }</div>
+
     }
 
-    addMessage( mess ){
-        this.setState( { message: mess })
+    // appendMessage (type, message, id) {
+        // console.log( type )
+        // console.log( message )
+        // console.log( id )
+    // }
+    
+    addMessage( id, mess ){
+        // this.appendMessage( 'message', mess, from )
+        // messages: [...this.state.messages, message]
+        console.log( id )
+        this.setState( { history: [...this.state.history, mess] })
     }
 
     setHistory( hist ){
+        console.log( 'history:' )
+        console.log( hist )
         this.setState( { history: hist })
     }
 
@@ -33,6 +48,12 @@ export default class Chat extends React.Component {
 
 // Chat.propTypes = {
     // onSay: PropTypes.func.isRequired,
-    // history: PropTypes.arrayOf( PropTypes.string ),
+    // history: PropTypes.arrayOf( PropTypes.string ).isRequired
+    // history: PropTypes.arrayOf( PropTypes.shape({
+    //     id: PropTypes.string,
+    //     message: PropTypes.string
+    // }
+
+    // ) )
     // message: PropTypes.string
 // }
