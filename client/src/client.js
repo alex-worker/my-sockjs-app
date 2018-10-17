@@ -7,9 +7,8 @@ export default class Client {
     // callback - callback function
     // sock - SockJS class
 
-    // callback json type: close/open/message/error
-
-    _getRetJSON(type_mess='message'){
+    // callback json type: -close/-open/-error/-packet
+    _getRetJSON(type_mess='-packet'){
         return {
             'type':type_mess
         }
@@ -35,12 +34,12 @@ export default class Client {
     }
     
     onOpen(){
-        let ret = this._getRetJSON('open');
+        let ret = this._getRetJSON('-open');
         this.callback_function( ret )
     }
 
     onClose(){
-        let ret = this._getRetJSON('close');
+        let ret = this._getRetJSON('-close');
         this.callback_function( ret )
     }
 
@@ -53,7 +52,7 @@ export default class Client {
 
     onError(){
         let ret = this._getRetJSON();
-        ret.type = 'error';
+        ret.type = '-error';
         this.callback_function( ret )
     }
 

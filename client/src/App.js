@@ -2,6 +2,8 @@ import React from 'react';
 import {Header, Footer} from './layouts/'
 import Login from './pages/Login'
 import Loading from './pages/Loading'
+import Chat from './pages/Chat'
+
 import Grid from '@material-ui/core/Grid'
 
 import conf from '../../common/config'
@@ -9,13 +11,14 @@ import Client from './client'
 
 import Snackbar from '@material-ui/core/Snackbar';
 
-// const client = new Client()
 var client
 
 class App extends React.Component {
 
     state = {
         username: 'guest',
+        history: [],
+        message: '',
         mode: 'login',
         error: ''
     }
@@ -23,9 +26,17 @@ class App extends React.Component {
     constructor(){ 
         super()
         this.callbackArray = []
-        this.callbackArray['close'] = this.onClose.bind(this)
-        this.callbackArray['open'] = this.onOpen.bind(this)
+
+        this.chatRef = React.createRef();
+
+        // transport layer:
+        this.callbackArray['-close'] = this.onClose.bind(this)
+        this.callbackArray['-open'] = this.onOpen.bind(this)
+        this.callbackArray['-packet'] = this.onPacket.bind(this)
+
+        // message layer:
         this.callbackArray['message'] = this.onMessage.bind(this)
+        this.callbackArray['history'] = this.onHistory.bind(this)
     }
 
     processClient( mess ){
@@ -37,23 +48,33 @@ class App extends React.Component {
     }
 
     onOpen(){
-        console.log('on open')
         this.setState( {mode: 'chat', error: ''} )
     }
 
-    onMessage( mess ){
-        console.log('message:')
-        console.log(mess)
-        // this.setState( {mode: 'chat', error: ''} )
+    onPacket( packet ){
+        this.processClient( JSON.parse(packet.message) )
     }
 
-    onCloseError(){
+    onCloseSnackbar(){
         this.setState( {error:''} )
     }
 
     onClose(){
-        console.log('on close')
-        this.setState( {mode: 'login', error: 'server closed'} )
+        this.setState( {mode: 'login', error: 'server is closed'} )
+    }
+
+    onMessage( mess ){
+        console.log( '---message:')
+        console.log( mess )
+        this.setState( {message: mess.message } )
+    }
+
+    onHistory( mess ){
+        console.log( '---history:')
+        console.log( mess.message )
+        // this.setState( {history: mess.message } )
+        this.chatRef.current.setHistory( mess.message )
+        // console.log( this.chatRef )
     }
 
     tryConnect(username) {
@@ -68,6 +89,9 @@ class App extends React.Component {
             return <Login username={this.state.username} onSubmit={this.tryConnect.bind(this)} />
         if (mode==='loading')
             return <Loading />
+        if (mode==='chat')
+            return <Chat ref={this.chatRef} />
+        console.error( 'unsupported mode: '+mode)
         return null
     }
 
@@ -82,7 +106,12 @@ class App extends React.Component {
             className='customDiv'>
         { this.getCurrentPage(mode) }
         </Grid>
-        <Snackbar vertical='bottom' horizontal='center' open={ (error === '')?false:true } message={error} onClose={ this.onCloseError.bind(this) }/>
+        <Snackbar
+            vertical='bottom'
+            horizontal='center'
+            message={error}
+            open={ (error === '')?false:true }
+            onClose={ this.onCloseSnackbar.bind(this) }/>
         <Footer />
         </>
     }
