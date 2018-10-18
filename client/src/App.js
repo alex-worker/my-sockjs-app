@@ -4,12 +4,12 @@ import Login from './pages/Login'
 import Loading from './pages/Loading'
 import Chat from './pages/Chat'
 
-import Grid from '@material-ui/core/Grid'
+// import Grid from '@material-ui/core/Grid'
 
 import conf from '../../common/config'
 import Client from './client'
 
-import Snackbar from '@material-ui/core/Snackbar';
+// import Snackbar from '@material-ui/core/Snackbar';
 
 var client
 
@@ -111,20 +111,12 @@ class App extends React.Component {
         let { mode, error } = this.state
         return <>
         <Header />
-        <Grid container 
-            direction="column" 
-            justify="center" 
-            alignItems="center" 
-            className='customDiv'>
         { this.getCurrentPage(mode) }
-        </Grid>
-        <Snackbar
-            vertical='bottom'
-            horizontal='center'
+        <div
             message={error}
             open={ (error === '')?false:true }
             onClose={ this.onCloseSnackbar.bind(this) }/>
-        <Footer />
+        <Footer position='sticky' />
         </>
     }
     

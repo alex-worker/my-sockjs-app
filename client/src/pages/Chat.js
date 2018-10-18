@@ -1,5 +1,9 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
+// import List from '@material-ui/core/List';
+// import ListItemText from '@material-ui/core/ListItemText';
+// import ListItem from '@material-ui/core/ListItem';
+
 
 export default class Chat extends React.Component {
 
@@ -8,29 +12,19 @@ export default class Chat extends React.Component {
         // message: ''
     }
 
-    // constructor(){
-        // super()
-        // this.logList = React.createRef()
-    // }
-
     render() {
         let { history } = this.state
         console.log( 'render history')
         console.log( history )
-        return <div id='my_list'>{
+        return <ul id='my_list'>{
             history.map( (mess,i) => {
-                return <div key={i}>{mess}</div>
+                return <li key={i}>
+                    <p key={i}>{mess}</p>
+                    </li>
             })
-        }</div>
-
+        }</ul>
     }
 
-    // appendMessage (type, message, id) {
-        // console.log( type )
-        // console.log( message )
-        // console.log( id )
-    // }
-    
     addMessage( id, mess ){
         // this.appendMessage( 'message', mess, from )
         // messages: [...this.state.messages, message]
@@ -46,14 +40,3 @@ export default class Chat extends React.Component {
 
 }
 
-// Chat.propTypes = {
-    // onSay: PropTypes.func.isRequired,
-    // history: PropTypes.arrayOf( PropTypes.string ).isRequired
-    // history: PropTypes.arrayOf( PropTypes.shape({
-    //     id: PropTypes.string,
-    //     message: PropTypes.string
-    // }
-
-    // ) )
-    // message: PropTypes.string
-// }
