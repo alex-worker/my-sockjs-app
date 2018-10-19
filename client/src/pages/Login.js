@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-// import Grid from '@material-ui/core/Grid';
-// import Button from '@material-ui/core/Button';
-// import TextField from '@material-ui/core/TextField';
+import Button from 'muicss/lib/react/button';
+// import Container from 'muicss/lib/react/Container';
+import Input from 'muicss/lib/react/Input';
+import Panel from 'muicss/lib/react/panel';
 
 class Login extends React.Component {
     
@@ -20,14 +21,18 @@ class Login extends React.Component {
     }
   
     render() {
-        let {username} = this.state;
-        return <div className='customDiv'>
-        <div>
+        // let {username} = this.state;
+        return <Panel>
             <form onSubmit={this.onSubmit.bind(this)}>
-                <div><input label="Name" name='name' value={username} placeholder='your name please' onChange={this.onChange.bind(this)} /></div>
-                <div><button>Go to chat</button></div>
+            <Input
+                label="Name"
+                floatingLabel={true}
+                value={this.state.username}
+                onChange={ this.onChange.bind(this)}
+                />
+                <Button color="primary">Go to chat</Button>
             </form>
-        </div></div>
+        </Panel>
     }
 }
 

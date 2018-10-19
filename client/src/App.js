@@ -4,7 +4,9 @@ import Login from './pages/Login'
 import Loading from './pages/Loading'
 import Chat from './pages/Chat'
 
-// import Grid from '@material-ui/core/Grid'
+import 'muicss/lib/sass/mui.scss';
+import './index.scss'
+// import Container from 'muicss/lib/react/Container';
 
 import conf from '../../common/config'
 import Client from './client'
@@ -111,12 +113,18 @@ class App extends React.Component {
         let { mode, error } = this.state
         return <>
         <Header />
+        {/* <div className='customDiv'> */}
+        {/* <Container fluid={true}> */}
         { this.getCurrentPage(mode) }
+        {/* </Container> */}
+        {/* </div> */}
+        <Footer position='sticky'>
         <div
             message={error}
             open={ (error === '')?false:true }
-            onClose={ this.onCloseSnackbar.bind(this) }/>
-        <Footer position='sticky' />
+            onClose={ this.onCloseSnackbar.bind(this) }
+            />        
+        </Footer>
         </>
     }
     

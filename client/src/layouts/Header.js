@@ -4,7 +4,7 @@ import React from 'react';
 const Header = () => 
     <div position='sticky'>
     <div>
-        <div variant='h5' color='inherit'>my-sockjs-app</div>
+        <div>my-sockjs-app</div>
     </div>
     </div>
 
