@@ -1,11 +1,8 @@
 import React from 'react';
-// import {AppBar,Toolbar,Typography} from '@material-ui/core'
 
 const Header = () => 
-    <div position='sticky'>
-    <div>
+    <header>
         <div>my-sockjs-app</div>
-    </div>
-    </div>
+    </header>
 
 export default Header;

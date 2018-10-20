@@ -1,9 +1,7 @@
-// @import "@material/react-button/index";
-
-// p {
-//     font-weight: bold;
-//     color: red;
-//   }
+:root {
+  --secondary-color: white;
+  --main-color: #5ea3d0;
+}
 
 html, body {
     height: 100%;
@@ -14,47 +12,29 @@ html, body {
   display: flex;
   flex-direction: column;
   border: 1px red solid;
-  margin: 0;
-  padding: 0;
+  // margin: 0;
+  // padding: 0;
 }
 
 header {
-  // display: flex;
   flex-grow: 0;
-  // flex-direction: row !important;
+  color: var(--secondary-color);
+  background: var(--main-color);
 }
 
 footer {
   flex-grow: 0;
+  color: var(--secondary-color);
+  background: var(--main-color);
 }
 
-// .hero {
-// //   // display: -ms-flexbox;
-  // display: flex;
-  // height: 100%;
-  // flex-direction: column;
-// //   // -ms-flex-flow: row nowrap;
-//   flex-flow: row nowrap;
-// //   // -ms-flex-align: center;
-//   align-items: center;
-// //   // -ms-flex-pack: center;
-//   justify-content: center;
-// //   // min-height: 360px;
-//   padding: 24px;
-  // background-color: #f2f2f2; 
-// }
-  
-// .foo-button {
-//   @include mdc-button-ink-color(teal);
-//   @include mdc-states(teal);
-// }
-
-.customDiv {
-  display: flex;
-  // height: 100%;
+.central {
   flex-grow: 1;
-// //   // justify-content: center;
-// //   // align-items: center;
-// //   // border: 1px red solid;
-// //   // color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  background: var(--secondary-color);
 }

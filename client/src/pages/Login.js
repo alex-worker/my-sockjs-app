@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import Button from 'muicss/lib/react/button';
+// import Button from 'muicss/lib/react/button';
 // import Container from 'muicss/lib/react/Container';
-import Input from 'muicss/lib/react/Input';
-import Panel from 'muicss/lib/react/panel';
+// import Input from 'muicss/lib/react/Input';
+// import Panel from 'muicss/lib/react/panel';
 
 class Login extends React.Component {
     
@@ -22,19 +22,16 @@ class Login extends React.Component {
   
     render() {
         // let {username} = this.state;
-        return <>
+        return <div>
             <form onSubmit={this.onSubmit.bind(this)}>
-            <Panel>
-            <Input
+            <input
                 label="Name"
-                floatingLabel={true}
                 value={this.state.username}
                 onChange={ this.onChange.bind(this)}
                 />
-                <Button color="primary">Go to chat</Button>
-                </Panel>
+                <button color="primary">Go to chat</button>
             </form>
-        </>
+        </div>
     }
 }
 

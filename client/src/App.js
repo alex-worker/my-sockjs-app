@@ -1,17 +1,14 @@
 import React from 'react';
-// import {Header, Footer} from './layouts/'
+import {Header, Footer} from './layouts/'
 import Login from './pages/Login'
 import Loading from './pages/Loading'
 import Chat from './pages/Chat'
 
-import 'muicss/lib/sass/mui.scss';
+import 'normalize.css'
 import './index.scss'
-// import Container from 'muicss/lib/react/Container';
 
 import conf from '../../common/config'
 import Client from './client'
-
-// import Snackbar from '@material-ui/core/Snackbar';
 
 var client
 
@@ -112,19 +109,16 @@ class App extends React.Component {
     render() {
         let { mode } = this.state
         return <>
-        {/* <Header /> */}
-        {/* <div className='customDiv'> */}
-        {/* <Container fluid={true}> */}
+        <Header />
+        <div className='central'>
         { this.getCurrentPage(mode) }
-        {/* </Container> */}
+        </div>
         {/* </div> */}
-        {/* <Footer position='sticky'> */}
-        {/* <div */}
             {/* message={error} */}
             {/* open={ (error === '')?false:true } */}
             {/* onClose={ this.onCloseSnackbar.bind(this) } */}
             {/* />         */}
-        {/* </Footer> */}
+        <Footer />
         </>
     }
     
