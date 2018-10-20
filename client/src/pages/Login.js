@@ -22,8 +22,9 @@ class Login extends React.Component {
   
     render() {
         // let {username} = this.state;
-        return <Panel>
+        return <>
             <form onSubmit={this.onSubmit.bind(this)}>
+            <Panel>
             <Input
                 label="Name"
                 floatingLabel={true}
@@ -31,8 +32,9 @@ class Login extends React.Component {
                 onChange={ this.onChange.bind(this)}
                 />
                 <Button color="primary">Go to chat</Button>
+                </Panel>
             </form>
-        </Panel>
+        </>
     }
 }
 

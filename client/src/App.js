@@ -1,5 +1,5 @@
 import React from 'react';
-import {Header, Footer} from './layouts/'
+// import {Header, Footer} from './layouts/'
 import Login from './pages/Login'
 import Loading from './pages/Loading'
 import Chat from './pages/Chat'
@@ -110,21 +110,21 @@ class App extends React.Component {
     }
 
     render() {
-        let { mode, error } = this.state
+        let { mode } = this.state
         return <>
-        <Header />
+        {/* <Header /> */}
         {/* <div className='customDiv'> */}
         {/* <Container fluid={true}> */}
         { this.getCurrentPage(mode) }
         {/* </Container> */}
         {/* </div> */}
-        <Footer position='sticky'>
-        <div
-            message={error}
-            open={ (error === '')?false:true }
-            onClose={ this.onCloseSnackbar.bind(this) }
-            />        
-        </Footer>
+        {/* <Footer position='sticky'> */}
+        {/* <div */}
+            {/* message={error} */}
+            {/* open={ (error === '')?false:true } */}
+            {/* onClose={ this.onCloseSnackbar.bind(this) } */}
+            {/* />         */}
+        {/* </Footer> */}
         </>
     }
     
