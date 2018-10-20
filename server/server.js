@@ -50,7 +50,7 @@ let onData = (id,data) => {
 
         data.message = data.message.substr(0, 128);
 
-        if ( buffer.length > 15 ) buffer.shift();
+        if ( buffer.length > 515 ) buffer.shift();
         buffer.push(data.message);
 
         broadcast({ type: 'message', message: data.message, id: id });

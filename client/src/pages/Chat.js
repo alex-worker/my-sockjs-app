@@ -12,17 +12,25 @@ export default class Chat extends React.Component {
         // message: ''
     }
 
+    constructor(){
+        super()
+        this.messRef = React.createRef();
+    }
+
     render() {
         let { history } = this.state
-        console.log( 'render history')
-        console.log( history )
-        return <ul id='my_list'>{
+        return <div id='messages' ref={ this.messRef } ><ul>{
             history.map( (mess,i) => {
                 return <li key={i}>
-                    <p key={i}>{mess}</p>
+                    <div>{mess}</div>
                     </li>
             })
-        }</ul>
+        }</ul></div>
+    }
+
+    componentDidUpdate () {
+        var el = this.messRef.current;
+        el.scrollTop = el.scrollHeight;
     }
 
     addMessage( id, mess ){

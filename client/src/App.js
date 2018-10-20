@@ -107,17 +107,15 @@ class App extends React.Component {
     }
 
     render() {
-        let { mode } = this.state
+        let { mode, error } = this.state
         return <>
         <Header />
         <div className='central'>
         { this.getCurrentPage(mode) }
         </div>
-        {/* </div> */}
-            {/* message={error} */}
-            {/* open={ (error === '')?false:true } */}
-            {/* onClose={ this.onCloseSnackbar.bind(this) } */}
-            {/* />         */}
+        <div>
+            {error}
+        </div>
         <Footer />
         </>
     }
