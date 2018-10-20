@@ -1,9 +1,4 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
-// import List from '@material-ui/core/List';
-// import ListItemText from '@material-ui/core/ListItemText';
-// import ListItem from '@material-ui/core/ListItem';
-
 
 export default class Chat extends React.Component {
 
@@ -19,10 +14,11 @@ export default class Chat extends React.Component {
 
     render() {
         let { history } = this.state
-        return <div id='messages' ref={ this.messRef } ><ul>{
+        return <div id='message-list' ref={ this.messRef } ><ul>{
             history.map( (mess,i) => {
                 return <li key={i}>
-                    <div>{mess}</div>
+                    <div className='message-from'>buhaha:</div>
+                    <div className='message-text'>{mess}</div>
                     </li>
             })
         }</ul></div>
@@ -34,8 +30,6 @@ export default class Chat extends React.Component {
     }
 
     addMessage( id, mess ){
-        // this.appendMessage( 'message', mess, from )
-        // messages: [...this.state.messages, message]
         console.log( id )
         this.setState( { history: [...this.state.history, mess] })
     }

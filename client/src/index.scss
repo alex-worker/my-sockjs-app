@@ -3,6 +3,7 @@ $main-color: #5ea3d0;
 
 html, body {
     height: 100%;
+    font-family: system-ui;
   }
   
 #root {
@@ -36,14 +37,41 @@ footer {
 }
 
 .container {
-  background: var(--secondary-color);
+  background: $secondary-color;
 }
 
-#messages {
+#message-list {
   // background: green;
   border: 1px red dotted;
   width: 100%;
   overflow-y: scroll;
   margin: 0;
-  padding: 0 0 0 6px;
+  padding: 0;
+}
+
+#message-list ul {
+  border: 1px red dotted;
+  padding: 0;
+  margin: 0;
+}
+
+#message-list li {
+  list-style-type: none;
+  padding: 10px 0px 0px 0px;
+}
+
+.message-from {
+  padding: 0px 0px 0px 3px;
+  font-weight: bold;
+}
+
+.message-text {
+  // margin: 5px 5px 5px 10px;
+  padding: 5px 5px 5px 10px;
+  // display: block;
+  // border: 1px black dotted;
+  // display: inline;
+  // border-radius: 8px;
+  // background: $main-color;
+  // color: $secondary-color;
 }
