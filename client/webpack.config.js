@@ -2,9 +2,11 @@ const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
+// entry: ['@babel/polyfill', './src/index.js'],
+
 module.exports = {
   mode: 'development',
-  entry: ['@babel/polyfill', './src/index.js'],
+  entry: ['./src/index.js'],
   output: {
     path: path.join(__dirname, 'build'),
     filename: 'bundle.js',
@@ -31,6 +33,14 @@ module.exports = {
             } 
           },
         ],
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader"
+          }
+        ]
       },
     ],
   },

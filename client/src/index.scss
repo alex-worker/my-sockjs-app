@@ -75,3 +75,12 @@ footer {
   // background: $main-color;
   // color: $secondary-color;
 }
+
+.error {
+  background: red;
+  color: white;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}

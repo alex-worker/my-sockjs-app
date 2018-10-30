@@ -95,6 +95,15 @@ class App extends React.Component {
         client.connect();
     }
 
+    showErrorMessage(error){
+        if (error==='') return null
+        let myClass = 'error';
+        return <div className={myClass}>
+        {error}
+        </div>
+    
+    }
+
     getCurrentPage( mode ){
         if (mode==='login')
             return <Login username={this.state.username} onSubmit={this.tryConnect.bind(this)} />
@@ -113,9 +122,7 @@ class App extends React.Component {
         <div className='central'>
         { this.getCurrentPage(mode) }
         </div>
-        <div>
-            {error}
-        </div>
+        { this.showErrorMessage(error) }
         <Footer />
         </>
     }
