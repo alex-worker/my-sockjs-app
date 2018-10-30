@@ -6,6 +6,8 @@
   "repository": "https://github.com/alex-worker/my-sockjs-app.git",
   "author": "alex-worker <43813540+alex-worker@users.noreply.github.com>",
   "license": "MIT",
-  "scripts": {
+  "scripts": {},
+  "dependencies": {
+    "create-react-app": "^2.1.0"
   }
 }

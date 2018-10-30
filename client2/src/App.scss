@@ -1,0 +1,86 @@
+$secondary-color: white;
+$main-color: #5ea3d0;
+
+html, body {
+    height: 100%;
+    font-family: system-ui;
+  }
+  
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px red solid;
+}
+
+header {
+  height: 40px;
+  flex-grow: 0;
+  color: $secondary-color;
+  background: $main-color;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+footer {
+  flex-grow: 0;
+  color: $secondary-color;
+  background: $main-color;
+}
+
+.central {
+  flex-grow: 1;
+  display: flex;
+  // align-items: center;
+  justify-content: center;
+}
+
+.container {
+  background: $secondary-color;
+}
+
+#message-list {
+  // background: green;
+  border: 1px red dotted;
+  width: 100%;
+  overflow-y: scroll;
+  margin: 0;
+  padding: 0;
+}
+
+#message-list ul {
+  border: 1px red dotted;
+  padding: 0;
+  margin: 0;
+}
+
+#message-list li {
+  list-style-type: none;
+  padding: 10px 0px 0px 0px;
+}
+
+.message-from {
+  padding: 0px 0px 0px 3px;
+  font-weight: bold;
+}
+
+.message-text {
+  // margin: 5px 5px 5px 10px;
+  padding: 5px 5px 5px 10px;
+  // display: block;
+  // border: 1px black dotted;
+  // display: inline;
+  // border-radius: 8px;
+  // background: $main-color;
+  // color: $secondary-color;
+}
+
+.error {
+  background: red;
+  color: white;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
