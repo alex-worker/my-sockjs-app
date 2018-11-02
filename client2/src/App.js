@@ -17,6 +17,7 @@ const App = () => {
   const onMyLogin = ( login ) => {
     console.log( 'onMyLogin' )
     setLogin(login)
+    setError('')
     setPage('Chat')
   }
   
