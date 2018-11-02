@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import Client from '../client'
 import conf from '../config'
@@ -8,18 +8,27 @@ var client
 
 export const Chat = (props) => {
 
-    // const[state, setState] = useState(null)
+    const[isOnline, setIsOnline] = useState(null)
 
     const myClose = () => {
-        // setState(false)
-        // console.log( e )
+        setIsOnline( false )
         props.onClose( 'Server closed' )
     }
 
+    const myOpen = () => {
+        setIsOnline( true )
+    }
+
+    // const myPacket = ( packet ) => {
+    //     console.log( packet )
+    //     // setState( true )
+    //     // props.onClose( 'Server p' )
+    // }
+
     const callbackArray = {
         '-close': myClose,
-        // '-open': {},
-        // '-packet': {}
+        '-open': myOpen,
+    //     '-packet': myPacket
     }
 
     const processClient= ( mess ) => {
@@ -30,14 +39,27 @@ export const Chat = (props) => {
         callbackArray[mess.type]( mess )
     }
 
-    console.log('try login '+props.username )
-    client = new Client( conf.protocol+"://"+conf.ip+':'+conf.port+'/'+conf.bound, processClient );
-    client.connect();
+    const myEffectOff = () => {
+        console.log( 'myEffectOff' )
+    }
 
-    // if ( state === null )
+    const myEffectOn = () => {
+        console.log( 'myEffectOn' )
+        console.log('try login '+props.username )
+        client = new Client( conf.protocol+"://"+conf.ip+':'+conf.port+'/'+conf.bound, processClient );
+        client.connect();
+        return myEffectOff
+    }
+
+    useEffect( myEffectOn, [props]  )
+
+    if ( isOnline === null )
         return <div>Wait...loading...</div>
     
-    // setState(true)
-    // return <div>Ok!</div>
+    if ( isOnline === false )
+        return <div>disconnected...</div>
+
+    if ( isOnline === true )
+        return <div>chat ok</div>
 
 }
