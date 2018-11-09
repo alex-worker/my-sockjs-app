@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect, useMutationEffect, useLayoutEffect, useReducer, useRef } from 'react'
+import { useState, useEffect, useReducer, useRef } from 'react'
 
 import Client from '../client'
 import conf from '../config'

@@ -11,6 +11,7 @@ const validate = ajv.compile(json_schema)
 
 let clients = {}
 let buffer = []
+let clients_name = []
 
 function whisper (id, message) {
 	if ( !clients[id] ) return
@@ -24,6 +25,10 @@ function broadcast (message, exclude) {
 }
 
 let onData = (id,data) => {
+
+    if ( clients_name[id] === undefined ){ // проверяем зарегался ли читатель под своим ником
+        clients[id].close( 500, 'couth people say hello!');
+    }
 
     try {
         data = JSON.parse(data)
