@@ -69,6 +69,7 @@ let onClose = (id) => {
 }
 
 let onConnection = (conn) => {
+    // console.log( conn._session.recv.ws._stream )
     clients[conn.id] = conn
     broadcast({ type: 'newUser' }, conn.id)
     whisper(conn.id, { type: 'history', message: buffer, id: conn.id })

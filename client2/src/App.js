@@ -5,6 +5,8 @@ import {Footer} from './layouts/Footer'
 import {Login} from './pages/Login'
 import {Chat} from './pages/Chat'
 
+import cookie from 'react-cookies'
+
 const default_user = 'guest'
 const default_page = 'Login'
 
@@ -16,6 +18,7 @@ const App = () => {
   
   const onMyLogin = ( login ) => {
     console.log( 'onMyLogin' )
+    console.log( cookie.load('userId') )
     setLogin(login)
     setError('')
     setPage('Chat')

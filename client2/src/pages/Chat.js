@@ -72,6 +72,7 @@ export const Chat = (props) => {
         // console.log( 'myEffectOn' )
         console.log('try login '+props.username )
         client = new Client( conf.protocol+"://"+conf.ip+':'+conf.port+'/'+conf.bound, processClient );
+        // client = new Client( conf.protocol+"://"+conf.ip+':'+conf.port, processClient );
         client.connect();
         return myEffectOff
     }
