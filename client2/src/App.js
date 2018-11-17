@@ -18,7 +18,9 @@ const App = () => {
   
   const onMyLogin = ( login ) => {
     console.log( 'onMyLogin' )
-    console.log( cookie.load('userId') )
+    // cookie.save('userId', login, { path: '/' })
+    // cookie.save('bugaga', 'lal=100', { path: '/' })
+
     setLogin(login)
     setError('')
     setPage('Chat')
