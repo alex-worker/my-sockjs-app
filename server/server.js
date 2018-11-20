@@ -1,5 +1,7 @@
 'use strict';
 
+const uuidv5 = require('uuid/v5')
+
 const sockjs = require('sockjs')
 const Ajv = require('ajv')
 const ajv = new Ajv({
@@ -9,9 +11,11 @@ const ajv = new Ajv({
 const json_schema= require('../common/schema/webchat-srv.json')
 const validate = ajv.compile(json_schema)
 
+const namespace_uid = 'cce99b65-f057-49ae-b75c-1ebbd353bc8c'
+
 let clients = {}
 let buffer = []
-let clients_name = []
+let clients_info = {}
 
 function whisper (id, message) {
 	if ( !clients[id] ) return
@@ -26,9 +30,9 @@ function broadcast (message, exclude) {
 
 let onData = (id,data) => {
 
-    if ( clients_name[id] === undefined ){ // проверяем зарегался ли читатель под своим ником
-        clients[id].close( 500, 'couth people say hello!');
-    }
+    // if ( clients_name[id] === undefined ){ // проверяем зарегался ли читатель под своим ником
+    //     clients[id].close( 500, 'couth people say hello!');
+    // }
 
     try {
         data = JSON.parse(data)
@@ -51,14 +55,19 @@ let onData = (id,data) => {
     }
 
     if ( data.type == 'text' ) {
-        if ( !data.message ) return;
+        if ( !data.message ) return
 
-        data.message = data.message.substr(0, 128);
+        data.message = data.message.substr(0, 128)
 
-        if ( buffer.length > 515 ) buffer.shift();
-        buffer.push(data.message);
+        if ( buffer.length > 515 ) buffer.shift()
+        buffer.push(data.message)
 
-        broadcast({ type: 'message', message: data.message, id: id });
+        broadcast({ type: 'message', message: data.message, id: id })
+        return
+    }
+
+    if ( data.type == 'hello' ) {
+        console.log( 'client say hello: ' + data.message )
     }
 
 }
@@ -84,6 +93,21 @@ module.exports = {
         let my_sockjs = sockjs.createServer()
         my_sockjs.installHandlers(http_server, {prefix:'/'+bound})
         my_sockjs.on('connection', onConnection )
+
+    },
+
+    addUser: function(username) {
+        
+        let uid = uuidv5( username, namespace_uid )
+        console.log ( uid )
+
+        if ( clients_info[ uid ] === undefined ){
+
+            clients_info[ uid ] = {
+                username: username
+            }
+
+        } else return false;
 
     }
 

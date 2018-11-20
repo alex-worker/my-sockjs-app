@@ -18,8 +18,7 @@ const App = () => {
   
   const onMyLogin = ( login ) => {
     console.log( 'onMyLogin' )
-    // cookie.save('userId', login, { path: '/' })
-    // cookie.save('bugaga', 'lal=100', { path: '/' })
+    cookie.save('userId', login, { path: '/' })
 
     setLogin(login)
     setError('')
