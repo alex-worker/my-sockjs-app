@@ -53,10 +53,12 @@ http_server.on('upgrade', function(req, res){
     const ip = req.socket.remoteAddress;
     const port = req.socket.remotePort;
 
+    // console.log( res )
     let cookies = parseRequestCookies( req )
     if ( cookies.userId === undefined ) {
       console.log(`Look at you, hacker - your IP address is ${ip} and your source port is ${port}.`);
       req.socket.destroy()
+      res.end()
     }
     else {
       Server.addUser( cookies.userId )

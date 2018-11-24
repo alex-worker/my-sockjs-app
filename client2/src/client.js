@@ -15,8 +15,21 @@ export default class Client {
         }
     }
 
+    hello(){
+        // console.log( 'try say mess:' + mess)
+        this.sock.send(JSON.stringify({
+            type: 'hello',
+            message: this._username
+        }))
+    }
+
     say( mess ){
-        console.log( 'try say mess:' + mess)
+        // console.log( 'try say mess:' + mess)
+        this.sock.send(JSON.stringify({
+            type: 'text',
+            message: mess
+        }))
+
     }
 
     constructor( connect_url, callback ){
@@ -38,10 +51,8 @@ export default class Client {
     onOpen(){
         console.log( 'onOpen: ' + this._username )
         // открыли соединение - надо послать имя
-        this.sock.send(JSON.stringify({
-            type: 'hello',
-            message: this._username
-        }));
+        this.hello()
+        this.say( 'bugoga')
         let ret = this._getRetJSON('-open')
         this.callback_function( ret )
     }
@@ -59,8 +70,7 @@ export default class Client {
     }
 
     onError(){
-        let ret = this._getRetJSON();
-        ret.type = '-error';
+        let ret = this._getRetJSON('-error')
         this.callback_function( ret )
     }
 
