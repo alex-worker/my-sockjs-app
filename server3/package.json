@@ -7,7 +7,8 @@
   "author": "AlexWorker",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon index.js",
+    "dev": "nodemon index.js",
+    "test": "mocha test/index.js",
     "doc": "yarn jsdoc2md server.js"
   },
   "dependencies": {
@@ -16,7 +17,9 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "faker": "^4.1.0",
     "jsdoc-to-markdown": "^4.0.1",
+    "mocha": "^5.2.0",
     "nodemon": "^1.18.6"
   }
 }
