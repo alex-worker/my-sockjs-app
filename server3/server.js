@@ -14,12 +14,6 @@ const Users = require('./users')
 let clients = {}
 let buffer = []
 
-/**
- * A quite wonderful function.
- * @param {object} - privacy gown
- * @param {object} - security
- * @returns {survival}
- */
 function drop (id) {
     if ( !clients[id] ) return
     console.log( ' drop! ' + id)
@@ -39,10 +33,6 @@ function broadcast (message, exclude) {
 }
 
 let onData = (id,data) => {
-
-    // if ( clients_name[id] === undefined ){ // проверяем зарегался ли читатель под своим ником
-    //     clients[id].close( 500, 'couth people say hello!');
-    // }
 
     try {
         data = JSON.parse(data)

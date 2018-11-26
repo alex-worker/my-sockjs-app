@@ -29,15 +29,8 @@ const test_normal_use = () => {
 
 }
 
-// const no_auth_use = () => {
-
-// }
-
 const users_test = () => {
-    
     it("normal use", test_normal_use )
-    // describe("no auth use", no_auth_use )
-
 }
 
 describe("users", users_test )
