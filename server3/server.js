@@ -10,6 +10,7 @@ const json_schema= require('../common/schema/webchat-srv.json')
 const validate = ajv.compile(json_schema)
 
 const Users = require('./users')
+let users
 
 let clients = {}
 let buffer = []
@@ -100,6 +101,7 @@ module.exports = {
 
     install: function(http_server, bound) {
 
+        users = new Users()
         let my_sockjs = sockjs.createServer( 
             // {
             //     log: (severity, message) => {
@@ -117,7 +119,7 @@ module.exports = {
     },
 
     addUser: (username) => {
-        return Users.addUser( username )
+        return users.addUser( username )
     }
 
     // authUser: (username) => {

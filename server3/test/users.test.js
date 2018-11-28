@@ -2,29 +2,30 @@
 
 const assert = require('assert')
 const faker = require('faker')
+const UsersClass = require('../users')
 
 const test_normal_use = () => {
 
-    let Users = require('../users')
+    let users = new UsersClass()    
 
     let name = faker.name.firstName()
     let sock_uid = faker.random.uuid()
 
-    let uid = Users.addUser( name )
+    let uid = users.addUser( name )
     assert.notEqual( uid, false )
     assert.notEqual( uid, undefined )
     assert.notEqual( uid, null )
 
-    let res = Users.addUser( name )
+    let res = users.addUser( name )
     assert.equal( res, false );  // такой уже есть!
 
-    res = Users.getUser( uid )
+    res = users.getUser( uid )
     assert.equal( res, false );  // неавторизованных не выдаем
-    res = Users.getUser( sock_uid )
+    res = users.getUser( sock_uid )
     assert.equal( res, false );  // нет такого uid
 
-    Users.authUser( name, sock_uid )
-    res = Users.getUser( sock_uid )
+    users.authUser( name, sock_uid )
+    res = users.getUser( sock_uid )
     assert.equal( res.username, name );  // это наш!
 
 }
