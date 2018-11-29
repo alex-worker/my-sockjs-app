@@ -1,3 +1,3 @@
-require('./users.test')
+// require('./users.test')
 require('./server.test')
-require('./index.test')
+// require('./index.test')

@@ -12,14 +12,16 @@
     "doc": "yarn jsdoc2md server.js"
   },
   "dependencies": {
-    "ajv": "^6.5.5",
+    "ajv": "^6.6.1",
     "sockjs": "^0.3.19",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "connect": "^3.6.6",
     "faker": "^4.1.0",
     "jsdoc-to-markdown": "^4.0.1",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.7"
+    "nodemon": "^1.18.7",
+    "supertest": "^3.3.0"
   }
 }
