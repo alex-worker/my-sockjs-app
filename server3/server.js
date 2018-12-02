@@ -17,7 +17,7 @@ let buffer = []
 
 function drop (id) {
     if ( !clients[id] ) return
-    console.log( ' drop! ' + id)
+    // console.log( ' drop! ' + id)
     clients[id].close()
     delete clients[id]
 }
@@ -42,22 +42,26 @@ let onData = (id,data) => {
         console.error( err )
         return
     }
-    console.log( id + ' : ' + JSON.stringify(data) )
+    // console.log( id + ' : ' + JSON.stringify(data) )
 
     var valid = validate(data)
     if (valid) {
         // console.log('Valid!');
     }
     else {
-        console.log( data );
-        console.log('Invalid: ' + ajv.errorsText(validate.errors));
-        whisper(id, { type: 'error', message: ajv.errorsText(validate.errors), id: id });
+        // console.log( data );
+        // console.log('Invalid: ' + ajv.errorsText(validate.errors));
+        whisper(id, { 
+                type: 'error',
+                message: ajv.errorsText(validate.errors), 
+                id: id
+            });
         return
     }
 
     if ( data.type == 'text' ) {
 
-        if ( Users.getUser(id) === undefined ) { // пользователь не представился
+        if ( users.getUser(id) === undefined ) { // пользователь не представился
             drop(id)
             return
         }
@@ -72,8 +76,8 @@ let onData = (id,data) => {
     }
 
     if ( data.type == 'hello' ) {
-        console.log( 'client ' + id + ' say hello: ' + data.message )
-        if ( !Users.authUser( data.message, id ) ) {
+        // console.log( 'client ' + id + ' say hello: ' + data.message )
+        if ( !users.authUser( data.message, id ) ) {
             drop(id)
             return
         }
@@ -82,14 +86,14 @@ let onData = (id,data) => {
 }
 
 let onClose = (id) => {
-    console.log( 'client disconnect:' + id)
+    // console.log( 'client disconnect:' + id)
     delete clients[id]
     broadcast({ type: 'userLeft' })
 }
 
 let onConnection = (conn) => {
     // console.log( conn.headers )
-    console.log( 'client connect:' + conn.id)
+    // console.log( 'client connect:' + conn.id)
     clients[conn.id] = conn
     // broadcast({ type: 'newUser' }, conn.id)
     // whisper(conn.id, { type: 'history', message: buffer, id: conn.id })

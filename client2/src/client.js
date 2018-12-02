@@ -11,7 +11,7 @@ export default class Client {
     // callback json type: -close/-open/-error/-packet
     _getRetJSON(type_mess='-packet'){
         return {
-            'type':type_mess
+            type: type_mess
         }
     }
 

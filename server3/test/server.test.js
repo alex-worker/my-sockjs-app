@@ -18,10 +18,9 @@ let request // for [await] request( ... ).
 
 // let client // for chat-client request
 
-function promise_sockjs(){
+function new_promised_sockjs(){
     return new Promise(function(resolve, reject) {
 
-        // console.log( connect_url )
         let client = new SockJS( connect_url )
 
         client.onerror = (err) => { 
@@ -43,6 +42,28 @@ function promise_sockjs(){
     })
 }
 
+function send_promised_sockjs(client, mess){
+    return new Promise(function(resolve, reject) {
+
+        client.onerror = (err) => { 
+            reject(err)
+        }
+        client.onclose = (err) => {
+            reject(err)
+        }
+        // client.onopen = function() {
+        //     resolve(client)
+        // }
+        client.onmessage = function(mess_ret) {            
+            let ret = JSON.parse( mess_ret.data )
+            resolve( ret )
+        }
+
+        client.send( JSON.stringify(mess) )
+
+    })
+}
+
 const test_illegal_use = async () => {
 
     let uid = Server.addUser( common_name )
@@ -50,7 +71,18 @@ const test_illegal_use = async () => {
     assert.notEqual( uid, undefined )
     assert.notEqual( uid, null )
 
-    let client = await promise_sockjs()
+    let client = await new_promised_sockjs()
+    
+    let send_mess = {
+        type: 'texkkt',
+        message: 'lold'
+    }
+    
+    let resp = await send_promised_sockjs(client, send_mess)
+    assert.equal( resp.type, 'error')
+    assert.equal( resp.message, 'data.type should be equal to one of the allowed values')    
+
+
     await client.close()
     // await promise_sockjs()
 
