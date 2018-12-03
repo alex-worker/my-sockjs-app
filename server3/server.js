@@ -39,7 +39,7 @@ let onData = (id,data) => {
         data = JSON.parse(data)
     }
     catch(err){
-        console.error( err )
+        drop(id) // нечего присылать хрень
         return
     }
     // console.log( id + ' : ' + JSON.stringify(data) )

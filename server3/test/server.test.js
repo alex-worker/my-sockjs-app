@@ -45,21 +45,25 @@ function new_promised_sockjs(){
 function send_promised_sockjs(client, mess){
     return new Promise(function(resolve, reject) {
 
-        client.onerror = (err) => { 
+        client.onerror = (err) => {
+            console.log('on error')
             reject(err)
         }
         client.onclose = (err) => {
+            console.log('on close')
             reject(err)
         }
-        // client.onopen = function() {
-        //     resolve(client)
-        // }
-        client.onmessage = function(mess_ret) {            
+        client.onopen = function() {
+            console.log('on open')
+            resolve(client)
+        }
+        client.onmessage = function(mess_ret) {
+            console.log('on message', mess_ret )
             let ret = JSON.parse( mess_ret.data )
             resolve( ret )
         }
 
-        client.send( JSON.stringify(mess) )
+        client.send( mess )
 
     })
 }
@@ -71,26 +75,59 @@ const test_illegal_use = async () => {
     assert.notEqual( uid, undefined )
     assert.notEqual( uid, null )
 
+// ------------------------------------------------------------------------
+// посылаем просто lol - должны получить обрубленное соединение
+// ------------------------------------------------------------------------
     let client = await new_promised_sockjs()
     
-    let send_mess = {
+    let send_mess = 'lol'
+    let resp
+
+    try {
+        resp = await send_promised_sockjs(client, send_mess)
+        assert.fail("Server don't close by exception!")
+    }
+    catch( e ){ // должны выдать ошибку о закрытии соединения с сервером
+        assert.equal(e.type, 'close')
+    }
+// ------------------------------------------------------------------------
+// посылаем JSON неверного формата - должны получить сообщение об ошибке в JSON
+// ------------------------------------------------------------------------
+    send_mess = {
         type: 'texkkt',
         message: 'lold'
     }
-    
-    let resp = await send_promised_sockjs(client, send_mess)
-    assert.equal( resp.type, 'error')
-    assert.equal( resp.message, 'data.type should be equal to one of the allowed values')    
 
+    client = await new_promised_sockjs()
+    try {
+        resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
+    }
+    catch( e ){
+        assert.fail("Server exception done...")
+    }
+    assert.equal( resp.type, 'error')
+    assert.equal( resp.message, 'data.type should be equal to one of the allowed values')
+
+// ------------------------------------------------------------------------
+// пытаемся сказать ( type:text ) не представившись - должны получить ошибку сервера
+// ------------------------------------------------------------------------
+
+    send_mess = {
+        type: 'hello',
+        message: 'lold'
+    }
+
+    try {
+        resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
+    }
+    catch( e ){
+        assert.fail("Server exception done 2...")
+    }
+    console.log( resp )
+    // assert.equal( resp.type, 'error')
+    // assert.equal( resp.message, 'data.type should be equal to one of the allowed values')
 
     await client.close()
-    // await promise_sockjs()
-
-    // return request
-    // .get('/api/v1')
-    // .set('Accept', 'application/json')
-    // .expect("Content-type",'text/plain')
-    // .expect(200)
     
 }
 
