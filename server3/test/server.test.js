@@ -46,19 +46,19 @@ function send_promised_sockjs(client, mess){
     return new Promise(function(resolve, reject) {
 
         client.onerror = (err) => {
-            console.log('on error')
+            // console.log('on error')
             reject(err)
         }
         client.onclose = (err) => {
-            console.log('on close')
+            // console.log('on close')
             reject(err)
         }
         client.onopen = function() {
-            console.log('on open')
+            // console.log('on open')
             resolve(client)
         }
         client.onmessage = function(mess_ret) {
-            console.log('on message', mess_ret )
+            // console.log('on message', mess_ret )
             let ret = JSON.parse( mess_ret.data )
             resolve( ret )
         }
@@ -90,9 +90,9 @@ const test_illegal_use = async () => {
     catch( e ){ // должны выдать ошибку о закрытии соединения с сервером
         assert.equal(e.type, 'close')
     }
-// ------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // посылаем JSON неверного формата - должны получить сообщение об ошибке в JSON
-// ------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
     send_mess = {
         type: 'texkkt',
         message: 'lold'
@@ -108,27 +108,71 @@ const test_illegal_use = async () => {
     assert.equal( resp.type, 'error')
     assert.equal( resp.message, 'data.type should be equal to one of the allowed values')
 
-// ------------------------------------------------------------------------
-// пытаемся сказать ( type:text ) не представившись - должны получить ошибку сервера
-// ------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------
+// пытаемся сказать ( type:text ) не представившись - должны получить обрубленное соединение
+// ----------------------------------------------------------------------------------
 
     send_mess = {
-        type: 'hello',
+        type: 'text',
         message: 'lold'
     }
 
     try {
         resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
+        assert.fail("Server must throw error!...")
+    }
+    catch( e ){ // должны выдать ошибку о закрытии соединения с сервером
+        assert.equal(e.type, 'close')
+    }
+    
+// ----------------------------------------------------------------------------------
+// пытаемся представиться пользователем которого нет
+// ----------------------------------------------------------------------------------
+    send_mess = {
+        type: 'hello',
+        message: 'mr.Guest'
+    }
+
+    client = await new_promised_sockjs()
+    try {
+        resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
+        assert.fail("Server must throw error to mr.Guest")
+    }
+    catch( e ){ // должны выдать ошибку о закрытии соединения с сервером
+        assert.equal(e.type, 'close')
+    }
+    await client.close()
+
+// ----------------------------------------------------------------------------------
+// пытаемся представиться пользователем который есть
+// ----------------------------------------------------------------------------------
+    send_mess = {
+        type: 'hello',
+        message: common_name
+    }
+
+    let send_mess2 = {
+        type: 'text',
+        message: 'privet!'
+    }
+
+    client = await new_promised_sockjs()
+    try {
+        send_promised_sockjs(client, JSON.stringify( send_mess )) // сервер ничего не возвращает в ответ на hello(?)
+        resp = await send_promised_sockjs(client, JSON.stringify( send_mess2 ))
+        // assert.fail("Server must throw error to mr.Guest")
     }
     catch( e ){
-        assert.fail("Server exception done 2...")
+        assert.fail("Server must don't throw error to common_name!")
     }
-    console.log( resp )
-    // assert.equal( resp.type, 'error')
-    // assert.equal( resp.message, 'data.type should be equal to one of the allowed values')
 
+    // должны получить наше сообщение так как broadcast
+    assert.equal(resp.type, 'message' )
+    assert.equal(resp.message, send_mess2.message )
+
+    // console.log( resp )
     await client.close()
-    
+
 }
 
 const test_normal_use = async () => {

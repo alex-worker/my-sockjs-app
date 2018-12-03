@@ -61,7 +61,7 @@ let onData = (id,data) => {
 
     if ( data.type == 'text' ) {
 
-        if ( users.getUser(id) === undefined ) { // пользователь не представился
+        if ( users.getUser(id) === false ) { // пользователь не представился
             drop(id)
             return
         }
