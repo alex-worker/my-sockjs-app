@@ -35,9 +35,9 @@ function new_promised_sockjs(){
             resolve(client)
         }
         
-        // client.onmessage = function() {
-        //     resolve(client)
-        // }
+        client.onmessage = function() {
+            resolve(client)
+        }
 
     })
 }
@@ -67,6 +67,28 @@ function send_promised_sockjs(client, mess){
 
     })
 }
+
+// class SockClient {
+//     constructor(){
+//     }
+// }
+
+// функция создания нового клиента,
+//  присоединенного к серверу и представившегося
+const new_client_and_hello = async (name) => {
+
+    let client = await new_promised_sockjs()
+
+    let send_mess = {
+        type: 'hello',
+        message: name
+    }
+    
+    send_promised_sockjs(client, JSON.stringify( send_mess ))
+    return client
+
+}
+
 
 const test_illegal_use = async () => {
 
@@ -144,7 +166,7 @@ const test_illegal_use = async () => {
     await client.close()
 
 // ----------------------------------------------------------------------------------
-// пытаемся представиться пользователем который есть
+// пытаемся представиться пользователем который есть и сказать privet
 // ----------------------------------------------------------------------------------
     send_mess = {
         type: 'hello',
@@ -177,17 +199,23 @@ const test_illegal_use = async () => {
 
 const test_normal_use = async () => {
 
-    let uid = Server.addUser( common_name )
-    assert.notEqual( uid, false )
-    assert.notEqual( uid, undefined )
-    assert.notEqual( uid, null )
+// ----------------------------------------------------------------------------------
+// добавляем пользователя и соединяемся с сервером
+// ----------------------------------------------------------------------------------
 
-    return request
-        .get('/api/v1/laps')
-        .set('Accept', 'application/json')
-        .expect("Content-type",'text/plain')
-        .expect(200)
-    }
+    let client = await new_client_and_hello( common_name )
+    
+    let uid2 = faker.name.firstName()
+    let client2 = await new_client_and_hello( uid2 )
+
+    let uid3 = faker.name.firstName()
+    let client3 = await new_client_and_hello( uid3 )
+
+    await client.close()
+    await client2.close()
+    await client3.close()
+
+}
 
 describe("Server", function() {
 

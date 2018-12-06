@@ -81,6 +81,13 @@ let onData = (id,data) => {
             drop(id)
             return
         }
+        // иначе говорим ему 'hello'
+        whisper(id, { 
+            type: 'hello',
+            message: id, 
+            id: id
+        });
+
     }
 
 }
