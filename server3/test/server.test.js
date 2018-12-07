@@ -70,13 +70,14 @@ function get_promised_sockjs(client){
     return new Promise(function(resolve, reject) {
 
         client.onerror = (err) => {
+            console.log(' error! ')
             reject(err)
         }
         client.onclose = (err) => {
             reject(err)
         }
         client.onopen = function() {
-            reject(err) // ибо нефиг
+            reject(err) // ибо нефиг, клиент уже есть
             // resolve(client)
         }
         client.onmessage = function(mess_ret) {
@@ -220,34 +221,48 @@ const test_illegal_use = async () => {
 
 const test_normal_use = async () => {
 
+    let client, client2, client3
+    let prom, prom2
+    let send_mess, resp, resp2
+
 // ----------------------------------------------------------------------------------
 // добавляем пользователя и соединяемся с сервером
 // ----------------------------------------------------------------------------------
 
-    let client = await new_client_and_hello( common_name )
-    let client2 = await new_client_and_hello( faker.name.firstName() )
+    client = await new_client_and_hello( common_name )
+    client2 = await new_client_and_hello( faker.name.firstName() )
 
-    let send_mess = {
+    send_mess = {
         type: 'text',
         message: 'good news from 1!'
     }
 
 // делаем промис на получение сообщения
-    let prom2 = get_promised_sockjs(client2)
+    prom2 = get_promised_sockjs(client2)
+    await send_promised_sockjs(client, JSON.stringify( send_mess ))
 
-    let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
+    resp = await prom2 // чудо! пришло сообщение клиенту2 отправленное в чат от клиента1
+    assert.equal( resp.type, 'message')
+    assert.equal( resp.message, send_mess.message)
 
-    prom2.then( resp => {
-        assert.equal( resp.type, 'message')
-        assert.equal( resp.message, send_mess.message)
-    }).catch( err => {
-        assert.fail("Exception error from get promise")
-    })
-
-    let prom = get_promised_sockjs(client)
+    prom = get_promised_sockjs(client)
     prom2 = get_promised_sockjs(client2)
 
-    let client3 = await new_client_and_hello( faker.name.firstName() )
+    client3 = await new_client_and_hello( faker.name.firstName() )
+
+    send_mess = {
+        type: 'text',
+        message: 'good news from 3!'
+    }
+
+    resp = await send_promised_sockjs(client3, JSON.stringify( send_mess ))
+    console.log( resp )
+
+    resp = await prom
+    console.log( resp )
+
+    resp = await prom2
+    console.log( resp )
 
     await client.close()
     await client2.close()
