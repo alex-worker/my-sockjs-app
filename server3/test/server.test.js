@@ -66,6 +66,27 @@ function send_promised_sockjs(client, mess){
     })
 }
 
+function get_promised_sockjs(client){
+    return new Promise(function(resolve, reject) {
+
+        client.onerror = (err) => {
+            reject(err)
+        }
+        client.onclose = (err) => {
+            reject(err)
+        }
+        client.onopen = function() {
+            reject(err) // ибо нефиг
+            // resolve(client)
+        }
+        client.onmessage = function(mess_ret) {
+            // console.log('on message', mess_ret )
+            let ret = JSON.parse( mess_ret.data )
+            resolve( ret )
+        }
+    })
+}
+
 
 // функция создания нового клиента,
 //  присоединенного к серверу и представившегося
@@ -211,8 +232,20 @@ const test_normal_use = async () => {
         message: 'good news from 1!'
     }
 
+// делаем промис на получение сообщения
+    let prom2 = get_promised_sockjs(client2)
+
     let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
-    console.log( resp )
+
+    prom2.then( resp => {
+        assert.equal( resp.type, 'message')
+        assert.equal( resp.message, send_mess.message)
+    }).catch( err => {
+        assert.fail("Exception error from get promise")
+    })
+
+    let prom = get_promised_sockjs(client)
+    prom2 = get_promised_sockjs(client2)
 
     let client3 = await new_client_and_hello( faker.name.firstName() )
 
