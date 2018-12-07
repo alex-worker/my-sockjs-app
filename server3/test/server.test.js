@@ -16,8 +16,6 @@ let common_name
 let app // for app.use( ... )
 let request // for [await] request( ... ).
 
-// let client // for chat-client request
-
 function new_promised_sockjs(){
     return new Promise(function(resolve, reject) {
 
@@ -68,14 +66,15 @@ function send_promised_sockjs(client, mess){
     })
 }
 
-// class SockClient {
-//     constructor(){
-//     }
-// }
 
 // функция создания нового клиента,
 //  присоединенного к серверу и представившегося
 const new_client_and_hello = async (name) => {
+
+    let uid = Server.addUser( name ) // добавляем пользователя на сервер
+    assert.notEqual( uid, false )
+    assert.notEqual( uid, undefined )
+    assert.notEqual( uid, null )
 
     let client = await new_promised_sockjs()
 
@@ -84,7 +83,8 @@ const new_client_and_hello = async (name) => {
         message: name
     }
     
-    send_promised_sockjs(client, JSON.stringify( send_mess ))
+    let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
+    assert.equal( resp.type, 'hello')
     return client
 
 }
@@ -180,9 +180,9 @@ const test_illegal_use = async () => {
 
     client = await new_promised_sockjs()
     try {
-        send_promised_sockjs(client, JSON.stringify( send_mess )) // сервер ничего не возвращает в ответ на hello(?)
+        resp = await send_promised_sockjs(client, JSON.stringify( send_mess )) // сервер возвращает hello
+        assert.equal(resp.type, 'hello' )
         resp = await send_promised_sockjs(client, JSON.stringify( send_mess2 ))
-        // assert.fail("Server must throw error to mr.Guest")
     }
     catch( e ){
         assert.fail("Server must don't throw error to common_name!")
@@ -204,12 +204,17 @@ const test_normal_use = async () => {
 // ----------------------------------------------------------------------------------
 
     let client = await new_client_and_hello( common_name )
-    
-    let uid2 = faker.name.firstName()
-    let client2 = await new_client_and_hello( uid2 )
+    let client2 = await new_client_and_hello( faker.name.firstName() )
 
-    let uid3 = faker.name.firstName()
-    let client3 = await new_client_and_hello( uid3 )
+    let send_mess = {
+        type: 'text',
+        message: 'good news from 1!'
+    }
+
+    let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
+    console.log( resp )
+
+    let client3 = await new_client_and_hello( faker.name.firstName() )
 
     await client.close()
     await client2.close()
