@@ -222,7 +222,8 @@ const test_normal_use = async () => {
 
     let client, client2, client3
     let prom, prom2
-    let send_mess, resp, resp2
+    let send_mess, send_mess2
+    let resp
 
 // ----------------------------------------------------------------------------------
 // добавляем пользователя и соединяемся с сервером
@@ -240,7 +241,7 @@ const test_normal_use = async () => {
 
     send_mess = {
         type: 'text',
-        message: 'good news from 1!'
+        message: faker.random.words()
     }
 
 // ----------------------------------------------------------------------------------
@@ -254,6 +255,13 @@ const test_normal_use = async () => {
     resp = await prom2 // чудо! пришло сообщение клиенту2 отправленное в чат от клиента1
     assert.equal( resp.type, 'message')
     assert.equal( resp.message, send_mess.message)
+
+    send_mess2 = {
+        type: 'text',
+        message: faker.random.words()
+    }
+
+    await send_promised_sockjs(client2, JSON.stringify( send_mess2 ))
 
 // ----------------------------------------------------------------------------------
 // выход пользователя
@@ -272,7 +280,7 @@ const test_normal_use = async () => {
 // ----------------------------------------------------------------------------------
 
     let name3 = faker.name.firstName()
-    Server.addUser( name3 ) // добавляем пользователя на сервер
+    let uid3 = Server.addUser( name3 ) // добавляем пользователя на сервер
     client3 = await new_promised_sockjs()
 
     let send_mess3 = {
@@ -280,11 +288,27 @@ const test_normal_use = async () => {
         message: name3
     }
     
+    let etalon = {
+        type: 'history',
+        message: [ 
+            {
+                name: common_name,
+                message: send_mess.message
+            }, 
+            {
+                name: name2,
+                message: send_mess2.message
+            }
+        ],
+        id: uid3
+    }
+
     resp = await send_promised_sockjs(client, JSON.stringify( send_mess3 ))
-    console.log( resp )
+    etalon.id = resp.id // id с сервера пришло
+
+    assert.equal( JSON.stringify( etalon ),  JSON.stringify( resp ) )
 
     await client.close()
-    // await client2.close()
     await client3.close()
 
 }

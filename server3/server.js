@@ -67,9 +67,14 @@ let onData = (id,data) => {
         }
 
         data.message = data.message.substr(0, 128)
-
         if ( buffer.length > 515 ) buffer.shift()
-        buffer.push(data.message)
+        let say_buffer = {
+            name: users.getUser( id ).username,
+            message: data.message
+        }
+            // users.getUser( id ).username
+
+        buffer.push(say_buffer)
 
         broadcast({ type: 'message', message: data.message, id: id })
         return
