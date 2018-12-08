@@ -88,7 +88,6 @@ function get_promised_sockjs(client){
     })
 }
 
-
 // функция создания нового клиента,
 //  присоединенного к серверу и представившегося
 const new_client_and_hello = async (name) => {
@@ -106,7 +105,7 @@ const new_client_and_hello = async (name) => {
     }
     
     let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
-    assert.equal( resp.type, 'hello')
+    assert.equal( resp.type, 'history')
     return client
 
 }
@@ -202,8 +201,8 @@ const test_illegal_use = async () => {
 
     client = await new_promised_sockjs()
     try {
-        resp = await send_promised_sockjs(client, JSON.stringify( send_mess )) // сервер возвращает hello
-        assert.equal(resp.type, 'hello' )
+        resp = await send_promised_sockjs(client, JSON.stringify( send_mess )) // сервер возвращает history
+        assert.equal(resp.type, 'history' )
         resp = await send_promised_sockjs(client, JSON.stringify( send_mess2 ))
     }
     catch( e ){
@@ -227,17 +226,28 @@ const test_normal_use = async () => {
 
 // ----------------------------------------------------------------------------------
 // добавляем пользователя и соединяемся с сервером
+// должны были получить сообщение о приходе нового пользователя
 // ----------------------------------------------------------------------------------
 
     client = await new_client_and_hello( common_name )
-    client2 = await new_client_and_hello( faker.name.firstName() )
+    prom = get_promised_sockjs(client)
+    let name2 = faker.name.firstName()
+    client2 = await new_client_and_hello( name2 )
+
+    resp = await prom
+    assert.equal( resp.type, 'newUser')
+    assert.equal( resp.message, name2 )
 
     send_mess = {
         type: 'text',
         message: 'good news from 1!'
     }
 
-// делаем промис на получение сообщения
+// ----------------------------------------------------------------------------------
+// отправка пользователем сообщения в чат
+// доугой пользователь должен получить его из чата
+// ----------------------------------------------------------------------------------
+
     prom2 = get_promised_sockjs(client2)
     await send_promised_sockjs(client, JSON.stringify( send_mess ))
 
@@ -245,27 +255,36 @@ const test_normal_use = async () => {
     assert.equal( resp.type, 'message')
     assert.equal( resp.message, send_mess.message)
 
+// ----------------------------------------------------------------------------------
+// выход пользователя
+// оставшийся пользователь должен получить извещение о выходе 
+// ----------------------------------------------------------------------------------
+
     prom = get_promised_sockjs(client)
-    prom2 = get_promised_sockjs(client2)
-
-    client3 = await new_client_and_hello( faker.name.firstName() )
-
-    send_mess = {
-        type: 'text',
-        message: 'good news from 3!'
-    }
-
-    resp = await send_promised_sockjs(client3, JSON.stringify( send_mess ))
-    console.log( resp )
-
+    await client2.close()
     resp = await prom
-    console.log( resp )
+    assert.equal( resp.type, 'userLeft')
+    assert.equal( resp.message, name2)
 
-    resp = await prom2
+// ----------------------------------------------------------------------------------
+// вход нового пользователя
+// вошедший пользователь должен получить историю предыдущих сообщений
+// ----------------------------------------------------------------------------------
+
+    let name3 = faker.name.firstName()
+    Server.addUser( name3 ) // добавляем пользователя на сервер
+    client3 = await new_promised_sockjs()
+
+    let send_mess3 = {
+        type: 'hello',
+        message: name3
+    }
+    
+    resp = await send_promised_sockjs(client, JSON.stringify( send_mess3 ))
     console.log( resp )
 
     await client.close()
-    await client2.close()
+    // await client2.close()
     await client3.close()
 
 }

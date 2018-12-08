@@ -81,12 +81,10 @@ let onData = (id,data) => {
             drop(id)
             return
         }
-        // иначе говорим ему 'hello'
-        whisper(id, { 
-            type: 'hello',
-            message: id, 
-            id: id
-        });
+        // иначе всем говорим что зашел новый пользователь
+        broadcast({ type: 'newUser', message: data.message }, id)
+        // а ему отправляем историю сообщений
+        whisper( id, { type: 'history', message: buffer, id: id })
 
     }
 
@@ -94,8 +92,9 @@ let onData = (id,data) => {
 
 let onClose = (id) => {
     // console.log( 'client disconnect:' + id)
+    let exit_username = users.getUser( id ).username
     delete clients[id]
-    broadcast({ type: 'userLeft' })
+    broadcast({ type: 'userLeft', message: exit_username })
 }
 
 let onConnection = (conn) => {
