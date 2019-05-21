@@ -1,5 +1,5 @@
 {
-  "name": "my-sockjs-app-server",
+  "name": "server",
   "version": "0.0.1",
   "description": "some sockjs stuff",
   "main": "index.js",

@@ -9,7 +9,7 @@
   "private": true,
   "workspaces": ["client", "server"],
   "scripts": {
-    "server:test":"yarn "
+    "server:test":"yarn workspace server test"
   },
   "dependencies": {
     "create-react-app": "^3.0.1"
