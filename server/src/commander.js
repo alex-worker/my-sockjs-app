@@ -6,7 +6,14 @@ function add(name,func){
 }
 
 function process( ctx ){
-    console.log('COMMANDER!')
+    // console.log('COMMANDER!')
+    let command = ctx.data.type
+    if ( command === undefined ) {
+        ctx.api.drop(ctx.id) // нечего присылать хрень
+        return
+    }
+    console.log( 'Command:' + command )
+    // ctx.api.drop(ctx.id)
 }
 
 module.exports = {

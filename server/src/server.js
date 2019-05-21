@@ -21,27 +21,28 @@ function use(func){
     middleware.push(func)
 }
 
-/**
- * Drop connection
- * @param {id} - connection id
- */
-function drop (id) {
-    if ( !clients[id] ) return
-    // console.log( ' drop! ' + id)
-    clients[id].close()
-    delete clients[id]
+class Server {
+
+    drop (id) {
+        if ( !clients[id] ) return
+        clients[id].close()
+        delete clients[id]
+    }
+    
+    whisper (id, message) {
+        if ( !clients[id] ) return
+        clients[id].write( JSON.stringify(message) )
+    }
+    
+    broadcast (message, exclude) {
+        for ( var i in clients ) {
+            if ( i != exclude ) clients[i].write( JSON.stringify(message) )
+        }
+    }
+    
 }
 
-function whisper (id, message) {
-	if ( !clients[id] ) return
-	clients[id].write( JSON.stringify(message) )
-}
-
-function broadcast (message, exclude) {
-	for ( var i in clients ) {
-		if ( i != exclude ) clients[i].write( JSON.stringify(message) )
-	}
-}
+const myServer = new Server();
 
 let onData = (id,data) => {
 
@@ -49,7 +50,7 @@ let onData = (id,data) => {
         data = JSON.parse(data)
     }
     catch(err){
-        drop(id) // нечего присылать хрень
+        myServer.drop(id) // нечего присылать хрень
         return
     }
 
@@ -70,6 +71,7 @@ let onData = (id,data) => {
     let ctx = {
         id: id,
         data: data,
+        api: myServer
     }
 
     middleware.forEach(el => {
@@ -94,18 +96,13 @@ let onData = (id,data) => {
 }
 
 let onClose = (id) => {
-    // console.log( 'client disconnect:' + id)
     let exit_username = users.getUser( id ).username
     delete clients[id]
-    broadcast({ type: 'userLeft', message: exit_username })
+    myServer.broadcast({ type: 'userLeft', message: exit_username })
 }
 
 let onConnection = (conn) => {
-    // console.log( conn.headers )
-    // console.log( 'client connect:' + conn.id)
     clients[conn.id] = conn
-    // broadcast({ type: 'newUser' }, conn.id)
-    // whisper(conn.id, { type: 'history', message: buffer, id: conn.id })
     conn.on('data', (data) => { onData(conn.id, data )} )
 	conn.on('close', () => { onClose(conn.id )} )
 }
