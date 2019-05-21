@@ -14,12 +14,17 @@ let users
 
 let clients = {}
 let buffer = []
+let commands = {}
+
+function on(name,func){
+    console.log('add command '+name)
+    commands[name] = func
+}
 
 /**
  * Drop connection
  * @param {id} - connection id
  */
-
 function drop (id) {
     if ( !clients[id] ) return
     // console.log( ' drop! ' + id)
@@ -47,56 +52,42 @@ let onData = (id,data) => {
         drop(id) // нечего присылать хрень
         return
     }
-    // console.log( id + ' : ' + JSON.stringify(data) )
 
-    var valid = validate(data)
-    if (valid) {
-        // console.log('Valid!');
-    }
-    else {
-        // console.log( data );
-        // console.log('Invalid: ' + ajv.errorsText(validate.errors));
-        whisper(id, {
-                type: 'error',
-                message: ajv.errorsText(validate.errors), 
-                id: id
-            });
+    let command = data.type
+    if ( command === undefined ) {
+        drop(id) // нечего присылать хрень
         return
     }
 
-    if ( data.type == 'text' ) {
+    // console.log( 'command:' + command )
+    // console.log( commands )
 
-        if ( users.getUser(id) === false ) { // пользователь не представился
-            drop(id)
-            return
-        }
-
-        data.message = data.message.substr(0, 128)
-        if ( buffer.length > 515 ) buffer.shift()
-        let say_buffer = {
-            name: users.getUser( id ).username,
-            message: data.message
-        }
-            // users.getUser( id ).username
-
-        buffer.push(say_buffer)
-
-        broadcast({ type: 'message', message: data.message, id: id })
+    if ( commands[command] === undefined ) {
+        console.log( 'UNSUPPORTED: ' + id + ' : ' + JSON.stringify(data) )
         return
     }
 
-    if ( data.type == 'hello' ) {
-        // console.log( 'client ' + id + ' say hello: ' + data.message )
-        if ( !users.authUser( data.message, id ) ) {
-            drop(id)
-            return
-        }
-        // иначе всем говорим что зашел новый пользователь
-        broadcast({ type: 'newUser', message: data.message }, id)
-        // а ему отправляем историю сообщений
-        whisper( id, { type: 'history', message: buffer, id: id })
-
+    let ctx = {
+        id: id,
+        data: data
     }
+
+    // commands[command].process( ctx )
+
+    // var valid = validate(data)
+    // if (valid) {
+    //     // console.log('Valid!');
+    // }
+    // else {
+    //     // console.log( data );
+    //     // console.log('Invalid: ' + ajv.errorsText(validate.errors));
+    //     whisper(id, {
+    //             type: 'error',
+    //             message: ajv.errorsText(validate.errors), 
+    //             id: id
+    //         });
+    //     return
+    // }
 
 }
 
@@ -119,6 +110,7 @@ let onConnection = (conn) => {
 
 module.exports = {
 
+    on,
     install: function(http_server, bound) {
 
         users = new Users()
@@ -141,9 +133,5 @@ module.exports = {
     addUser: (username) => {
         return users.addUser( username )
     }
-
-    // authUser: (username) => {
-    //     return Users.authUser( username )
-    // }
 
 }

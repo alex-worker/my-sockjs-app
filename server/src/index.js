@@ -32,6 +32,11 @@ http_server.listen(config.port, config.ip)
 console.log(' [*] Listening on '+config.ip+':'+config.port)
 
 const Server = require('./server')
+// const HELLO = require('./commands/hello')
+// const TEXT = require('./commands/text')
+// Server.on('hello', HELLO)
+// Server.on('text', TEXT)
+
 Server.install( http_server, config.bound )
 
 http_server.on('request', function(req, res){
