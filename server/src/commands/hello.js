@@ -2,7 +2,7 @@ function process(ctx){
 
 // если не получилось авторизовать пользователя - дропаем
     if ( !ctx.api.authUser( ctx.data.message, ctx.id ) ) {
-        drop(ctx.id)
+        ctx.api.drop(ctx.id)
         return
     }
 

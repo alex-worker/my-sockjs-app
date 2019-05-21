@@ -32,46 +32,41 @@ http_server.listen(config.port, config.ip)
 console.log(' [*] Listening on '+config.ip+':'+config.port)
 
 const Server = require('./server')
+
 const Commander = require('./commander')
-
-Server.use( Commander.middleware() )
-
 const HELLO = require('./commands/hello')
 const TEXT = require('./commands/text')
 Commander.add('hello', HELLO)
 Commander.add('text', TEXT)
 
+Server.use( Commander.middleware() )
 Server.install( http_server, config.bound )
 
-http_server.on('request', function(req, res){
-    console.log('request');
-    const ip = req.socket.remoteAddress;
-    const port = req.socket.remotePort;
+// http_server.on('request', function(req, res){
+    // console.log('request');
+    // const ip = req.socket.remoteAddress;
+    // const port = req.socket.remotePort;
 
-    let cookies = parseRequestCookies( req )
-    if ( cookies.userId === undefined ) {
-      console.log(`Look at you, hacker - your IP address is ${ip} and your source port is ${port}.`);
-      req.socket.destroy()
-    }
-  
-  });
+    // let cookies = parseRequestCookies( req )
+    // if ( cookies.userId === undefined ) {
+    //   console.log(`Look at you, hacker - your IP address is ${ip} and your source port is ${port}.`);
+    //   req.socket.destroy()
+    // }
+// });
 
 http_server.on('upgrade', function(req, res){
-    console.log('upgrade')
+  console.log('upgrade')
 
-    const ip = req.socket.remoteAddress;
-    const port = req.socket.remotePort;
+  const ip = req.socket.remoteAddress;
+  const port = req.socket.remotePort;
 
-    // console.log( res )
-    let cookies = parseRequestCookies( req )
-    if ( cookies.userId === undefined ) {
-      console.log(`Look at you, hacker - your IP address is ${ip} and your source port is ${port}.`);
-      req.socket.destroy()
-      res.end()
-    }
-    else {
-      Server.addUser( cookies.userId )
-    }
-    // req.socket.destroy()
-    // res.end()
-  })
+  let cookies = parseRequestCookies(req)
+  if ( cookies.userId === undefined ) {
+    console.log(`Look at you, hacker - your IP address is ${ip} and your source port is ${port}.`);
+    req.socket.destroy()
+    res.end()
+  }
+  else {
+    Server.addUser( cookies.userId )
+  }
+})

@@ -71,7 +71,7 @@ class Server {
 
 }
 
-const myServer = new Server();
+const myServer = new Server()
 
 let onData = (id,data) => {
 
@@ -82,20 +82,6 @@ let onData = (id,data) => {
         myServer.drop(id) // нечего присылать хрень
         return
     }
-
-    // let command = data.type
-    // if ( command === undefined ) {
-    //     drop(id) // нечего присылать хрень
-    //     return
-    // }
-
-    // console.log( 'command:' + command )
-    // console.log( commands )
-
-    // if ( commands[command] === undefined ) {
-    //     console.log( 'UNSUPPORTED: ' + id + ' : ' + JSON.stringify(data) )
-    //     return
-    // }
 
     let ctx = {
         id: id,
@@ -141,7 +127,7 @@ module.exports = {
     use,
     install: function(http_server, bound) {
 
-        let my_sockjs = sockjs.createServer( 
+        let my_sockjs = sockjs.createServer(
             // {
             //     log: (severity, message) => {
             //         console.log( '---- debug: ----')
