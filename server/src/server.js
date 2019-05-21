@@ -52,6 +52,10 @@ class Server {
         this.broadcast({ type: 'newUser', message: name }, id)
     }
 
+    sendUserLeft(name) { // потому что id уже нет и он удален из списка
+        this.broadcast({ type: 'userLeft', message: name })
+    }
+
     drop (id) {
         if ( !clients[id] ) return
         clients[id].close()
@@ -113,7 +117,7 @@ let onData = (id,data) => {
 let onClose = (id) => {
     let exit_username = users.getUser( id ).username
     delete clients[id]
-    myServer.broadcast({ type: 'userLeft', message: exit_username })
+    myServer.sendUserLeft(exit_username)
 }
 
 let onConnection = (conn) => {
