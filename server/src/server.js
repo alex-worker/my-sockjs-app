@@ -15,6 +15,11 @@ let users
 let clients = {}
 let buffer = []
 
+/**
+ * Drop connection
+ * @param {id} - connection id
+ */
+
 function drop (id) {
     if ( !clients[id] ) return
     // console.log( ' drop! ' + id)
