@@ -6,7 +6,11 @@
   "repository": "https://github.com/alex-worker/my-sockjs-app.git",
   "author": "alex-worker <43813540+alex-worker@users.noreply.github.com>",
   "license": "MIT",
-  "scripts": {},
+  "private": true,
+  "workspaces": ["client", "server"],
+  "scripts": {
+    "server:test":"yarn "
+  },
   "dependencies": {
     "create-react-app": "^3.0.1"
   }
