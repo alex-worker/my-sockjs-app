@@ -10,7 +10,7 @@ const json_schema= require('../../common/schema/webchat-srv.json')
 const validate = ajv.compile(json_schema)
 
 const Users = require('./users')
-let users
+let users = new Users()
 
 let clients = {}
 let buffer = []
@@ -22,6 +22,35 @@ function use(func){
 }
 
 class Server {
+
+    authUser (name, id) {
+        return users.authUser( name, id )
+    }
+
+    getUser(id){
+        return users.getUser(id)
+    }
+
+    say(id, message){
+        message = message.substr(0, 128)
+        if ( buffer.length > 515 ) buffer.shift()
+        let say_buffer = {
+            name: users.getUser( id ).username,
+            message: message
+        }
+        users.getUser( id ).username
+        buffer.push(say_buffer)
+
+        this.broadcast({ type: 'message', message: message, id: id })
+    }
+
+    sendHistory (id) {
+        this.whisper( id, { type: 'history', message: buffer, id: id })
+    }
+
+    sendNewUser(name, id) {
+        this.broadcast({ type: 'newUser', message: name }, id)
+    }
 
     drop (id) {
         if ( !clients[id] ) return
@@ -39,7 +68,7 @@ class Server {
             if ( i != exclude ) clients[i].write( JSON.stringify(message) )
         }
     }
-    
+
 }
 
 const myServer = new Server();
@@ -112,7 +141,6 @@ module.exports = {
     use,
     install: function(http_server, bound) {
 
-        users = new Users()
         let my_sockjs = sockjs.createServer( 
             // {
             //     log: (severity, message) => {

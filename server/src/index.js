@@ -33,19 +33,13 @@ console.log(' [*] Listening on '+config.ip+':'+config.port)
 
 const Server = require('./server')
 const Commander = require('./commander')
+
 Server.use( Commander.middleware() )
-// Server.use( ctx => {
-//   console.log(ctx.id)
-// })
 
-// Server.use( ctx => {
-//   console.log(ctx.data)
-// })
-
-// const HELLO = require('./commands/hello')
-// const TEXT = require('./commands/text')
-// Server.on('hello', HELLO)
-// Server.on('text', TEXT)
+const HELLO = require('./commands/hello')
+const TEXT = require('./commands/text')
+Commander.add('hello', HELLO)
+Commander.add('text', TEXT)
 
 Server.install( http_server, config.bound )
 

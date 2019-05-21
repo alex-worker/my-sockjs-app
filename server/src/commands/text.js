@@ -19,18 +19,15 @@
 //     return
 // }
 
-function process(id, data){
+function process(ctx){
 
-    // if ( users.getUser(id) === false ) { // пользователь не представился
-    //     drop(id)
-    //     return
-    // }
-
-    console.log('==text==')
-    console.log(id)
-    console.log(data)
+// пользователь не представился
+    if ( !ctx.api.getUser(ctx.id) ) {
+        drop(id)
+        return
+    }
+    ctx.api.say( ctx.id, ctx.data.message )
 }
 
-module.exports = {
-    process,
-}
+module.exports = process
+

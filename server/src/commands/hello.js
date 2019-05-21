@@ -1,29 +1,16 @@
+function process(ctx){
 
-// if ( data.type == 'hello' ) {
-//     // console.log( 'client ' + id + ' say hello: ' + data.message )
-//     if ( !users.authUser( data.message, id ) ) {
-//         drop(id)
-//         return
-//     }
-//     // иначе всем говорим что зашел новый пользователь
-//     broadcast({ type: 'newUser', message: data.message }, id)
-//     // а ему отправляем историю сообщений
-//     whisper( id, { type: 'history', message: buffer, id: id })
+// если не получилось авторизовать пользователя - дропаем
+    if ( !ctx.api.authUser( ctx.data.message, ctx.id ) ) {
+        drop(ctx.id)
+        return
+    }
 
-// }
+// иначе всем говорим что зашел новый пользователь
+    ctx.api.sendNewUser(ctx.id)
+// а ему отправляем историю сообщений
+    ctx.api.sendHistory(ctx.id)
 
-function process(id, data){
-
-    // if ( !users.authUser( data.message, id ) ) {
-    //     drop(id)
-    //     return
-    // }
-
-    console.log('==HELLO==')
-    console.log(id)
-    console.log(data)
 }
 
-module.exports = {
-    process
-}
+module.exports = process
