@@ -3,12 +3,9 @@
     "additionalProperties": false,
     "properties": {
         "type": {
-            "enum": [
-              "text",
-              "hello"
-            ]
+            "enum": [ "text", "hello" ]
         },
-        "message": { "type":"string" }
+        "message": { "type": "string" }
     },
     "required":[
         "type"
