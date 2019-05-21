@@ -32,6 +32,16 @@ http_server.listen(config.port, config.ip)
 console.log(' [*] Listening on '+config.ip+':'+config.port)
 
 const Server = require('./server')
+const Commander = require('./commander')
+Server.use( Commander.middleware() )
+// Server.use( ctx => {
+//   console.log(ctx.id)
+// })
+
+// Server.use( ctx => {
+//   console.log(ctx.data)
+// })
+
 // const HELLO = require('./commands/hello')
 // const TEXT = require('./commands/text')
 // Server.on('hello', HELLO)

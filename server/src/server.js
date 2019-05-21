@@ -14,11 +14,11 @@ let users
 
 let clients = {}
 let buffer = []
-let commands = {}
 
-function on(name,func){
-    console.log('add command '+name)
-    commands[name] = func
+let middleware = []
+
+function use(func){
+    middleware.push(func)
 }
 
 /**
@@ -53,26 +53,28 @@ let onData = (id,data) => {
         return
     }
 
-    let command = data.type
-    if ( command === undefined ) {
-        drop(id) // нечего присылать хрень
-        return
-    }
+    // let command = data.type
+    // if ( command === undefined ) {
+    //     drop(id) // нечего присылать хрень
+    //     return
+    // }
 
     // console.log( 'command:' + command )
     // console.log( commands )
 
-    if ( commands[command] === undefined ) {
-        console.log( 'UNSUPPORTED: ' + id + ' : ' + JSON.stringify(data) )
-        return
-    }
+    // if ( commands[command] === undefined ) {
+    //     console.log( 'UNSUPPORTED: ' + id + ' : ' + JSON.stringify(data) )
+    //     return
+    // }
 
     let ctx = {
         id: id,
-        data: data
+        data: data,
     }
 
-    // commands[command].process( ctx )
+    middleware.forEach(el => {
+        el(ctx)
+    })
 
     // var valid = validate(data)
     // if (valid) {
@@ -110,7 +112,7 @@ let onConnection = (conn) => {
 
 module.exports = {
 
-    on,
+    use,
     install: function(http_server, bound) {
 
         users = new Users()
