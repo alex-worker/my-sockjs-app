@@ -2,7 +2,7 @@
 
 const assert = require('assert')
 const faker = require('faker')
-const UsersClass = require('../users')
+const UsersClass = require('../src/users')
 
 const test_normal_use = () => {
 
