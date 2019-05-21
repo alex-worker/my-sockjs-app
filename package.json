@@ -10,6 +10,7 @@
   "workspaces": ["client", "server"],
   "scripts": {
     "srv:test":"yarn workspace server test",
+    "srv:dev":"yarn workspace server dev",
     "srv:doc":"yarn workspace server doc"
   },
   "dependencies": {

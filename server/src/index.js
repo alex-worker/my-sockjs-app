@@ -1,6 +1,6 @@
 'use strict';
 
-const conf = require('../common/config')
+const config = require('../../common/config')
 
 const http = require('http')
 const http_server = http.createServer()
@@ -28,11 +28,11 @@ function parseRequestCookies (request) {
   return list;
 }
 
-http_server.listen(conf.port, conf.ip)
-console.log(' [*] Listening on '+conf.ip+':'+conf.port)
+http_server.listen(config.port, config.ip)
+console.log(' [*] Listening on '+config.ip+':'+config.port)
 
 const Server = require('./server')
-Server.install( http_server, conf.bound )
+Server.install( http_server, config.bound )
 
 http_server.on('request', function(req, res){
     console.log('request');

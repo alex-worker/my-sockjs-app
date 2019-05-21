@@ -7,7 +7,7 @@
   "author": "AlexWorker",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "nodemon src/index.js",
     "test": "mocha test/index.js",
     "doc": "yarn jsdoc2md src/server.js"
   },

@@ -56,7 +56,7 @@ let onData = (id,data) => {
     else {
         // console.log( data );
         // console.log('Invalid: ' + ajv.errorsText(validate.errors));
-        whisper(id, { 
+        whisper(id, {
                 type: 'error',
                 message: ajv.errorsText(validate.errors), 
                 id: id
