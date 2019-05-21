@@ -6,7 +6,7 @@ const ajv = new Ajv({
 	allErrors: true,
 	verbose:   true,
 })
-const json_schema= require('../common/schema/webchat-srv.json')
+const json_schema= require('../../common/schema/webchat-srv.json')
 const validate = ajv.compile(json_schema)
 
 const Users = require('./users')

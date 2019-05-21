@@ -6,7 +6,7 @@ const conf = require('../../common/config')
 
 const http = require('http')
 const supertest = require('supertest')
-const Server = require('../server')
+const Server = require('../src/server')
 
 const SockJS = require('sockjs-client')
 
