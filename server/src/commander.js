@@ -17,6 +17,7 @@ function process( ctx ){
     
     if ( commands[command] === undefined ) {
         console.log( 'UNSUPPORTED: ' + command )
+        ctx.api.drop(ctx.id) // нечего присылать хрень
         return
     }
 
