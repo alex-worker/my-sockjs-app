@@ -152,8 +152,8 @@ const test_send_illegal_json = async() => {
 
     let client = await new_promised_sockjs()
     // try {
-    let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
-    console.log(resp)
+    // let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
+    // console.log(resp)
     // assert.equal( resp.type,  'history')
     // assert.fail("Server don't close by exception!")
     // }

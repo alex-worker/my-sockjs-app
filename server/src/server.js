@@ -6,8 +6,8 @@ const ajv = new Ajv({
 	allErrors: true,
 	verbose:   true,
 })
-const json_schema= require('../../common/schema/webchat-srv.json')
-const validate = ajv.compile(json_schema)
+// const json_schema= require('../../common/schema/webchat-srv.json')
+// const validate = ajv.compile(json_schema)
 
 const Users = require('./users')
 let users = new Users()
@@ -20,6 +20,8 @@ let middleware = []
 function use(func){
     middleware.push(func)
 }
+
+все надо переделать - чтобы в Server новый сервер не создавался, лол!
 
 class Server {
 
@@ -82,6 +84,8 @@ const myServer = new Server()
 
 let onData = (id,data) => {
 
+    console.log("===SERVER: ", id)
+    console.log("===DATA:", data)
     try {
         data = JSON.parse(data)
     }
