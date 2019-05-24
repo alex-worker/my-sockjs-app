@@ -9,6 +9,7 @@ function process( ctx ){
 
     let command = ctx.data.type
     if ( command === undefined ) {
+        ctx.api.sendError(ctx.id, "param type is undefined")
         ctx.api.drop(ctx.id) // нечего присылать хрень
         return
     }

@@ -44,6 +44,9 @@ class Server {
         this.broadcast({ type: 'message', message: message, id: id })
     }
 
+    sendError(id, error){
+        this.whisper( id, { type: 'history', message: buffer, id: id })
+    }
     sendHistory (id) {
         this.whisper( id, { type: 'history', message: buffer, id: id })
     }
