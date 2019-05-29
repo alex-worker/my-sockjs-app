@@ -10,7 +10,7 @@ const ajv = new Ajv({
 // const validate = ajv.compile(json_schema)
 
 const Users = require('./users')
-let users = new Users()
+let users
 
 let clients = {}
 let buffer = []
@@ -21,7 +21,7 @@ function use(func){
     middleware.push(func)
 }
 
-все надо переделать - чтобы в Server новый сервер не создавался, лол!
+// все надо переделать - чтобы в Server новый сервер не создавался, лол!
 
 class Server {
 
@@ -138,14 +138,17 @@ module.exports = {
     use,
     install: function(http_server, bound) {
 
+        let users = new Users()
+
         let my_sockjs = sockjs.createServer(
-            // {
-            //     log: (severity, message) => {
-            //         console.log( '---- debug: ----')
-            //         console.log( severity )
-            //         console.log( message )
-            //     }
-            // }
+            
+            {
+                log: (severity, message) => {
+                    console.log( '---- debug: ----')
+                    console.log( severity )
+                    console.log( message )
+                }
+            }
         )
 
         my_sockjs.installHandlers(http_server, {prefix:'/'+bound})
