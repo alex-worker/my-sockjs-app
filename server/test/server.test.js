@@ -362,20 +362,7 @@ describe("Server", async function() {
         app = connect()
         server = http.createServer(app).listen(conf.port, conf.ip)
         Server.install( server, conf.bound )
-
         request = supertest(server)
-
-// это на всякий случай тут пусть будет для http-запросов на будущее
-        // app.use( async (req, res, next) => {
-        //     res.writeHead(200, {'Content-Type': 'text/plain'})
-        //     res.write('Look at you, hacker!')
-        //     res.end()
-        //     next()
-        // })
-
-        // const connect_url = conf.protocol+"://"+conf.ip+'::'+conf.port+'/'+conf.bound
-        // client =  new SockJS( connect_url )
-
         done()
     })
     

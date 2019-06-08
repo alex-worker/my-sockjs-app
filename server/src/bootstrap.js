@@ -1,3 +1,4 @@
+// тут можно сканировать директорию как в koa-architect и аплоадить все из нее
 const Commander = require('./commander')
 const HELLO = require('./commands/hello')
 const TEXT = require('./commands/text')

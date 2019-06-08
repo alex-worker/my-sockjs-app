@@ -25,15 +25,9 @@ console.log(' [*] Listening on '+config.ip+':'+config.port)
 
 const Server = require('./server')
 
-const bootstrap = require('/bootstrap')
-// const Commander = require('./commander')
-// const HELLO = require('./commands/hello')
-// const TEXT = require('./commands/text')
-// Commander.add('hello', HELLO)
-// Commander.add('text', TEXT)
-// Server.use( Commander.middleware() )
-
+const bootstrap = require('./bootstrap')
 bootstrap.setup(Server)
+
 Server.install( http_server, config.bound )
 
 http_server.on('upgrade', function(req, res){
