@@ -115,7 +115,6 @@ const new_client_and_hello = async (name) => {
 const test_add_user = async() => {
 
     let uid = Server.addUser( common_name )
-    // console.log( common_name, uid )
     assert.notEqual( uid, false )
     assert.notEqual( uid, undefined )
     assert.notEqual( uid, null )

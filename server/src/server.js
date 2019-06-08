@@ -22,6 +22,8 @@ function use(func){
 }
 
 // все надо переделать - чтобы в Server новый сервер не создавался, лол!
+// а может это все на голанг переписать...
+
 
 class Server {
 
@@ -138,7 +140,9 @@ module.exports = {
     use,
     install: function(http_server, bound) {
 
-        let users = new Users()
+        users = new Users()
+        clients = {}
+        buffer = []
 
         let my_sockjs = sockjs.createServer(
             
