@@ -150,18 +150,15 @@ const test_send_illegal_json = async() => {
     }
 
     let client = await new_promised_sockjs()
-    // try {
-    // let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
-    // console.log(resp)
-    // assert.equal( resp.type,  'history')
-    // assert.fail("Server don't close by exception!")
-    // }
-    // catch( e ){
-        // assert.fail("Server exception done...")
-        // assert.equal(e.type, 'close')
-    // }
-    
-    // assert.equal( resp.message, 'data.type should be equal to one of the allowed values')
+    try {
+    let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
+        assert.equal( resp.type,  'error')
+        assert.equal( resp.message,  'param type is undefined')
+    }
+    catch( e ){
+        assert.fail("Server exception done...")
+    }
+
 }
 
 const test_illegal_use = async() => {

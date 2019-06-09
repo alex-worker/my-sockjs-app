@@ -49,7 +49,7 @@ class Server {
     }
 
     sendError(id, error){
-        this.whisper( id, { type: 'history', message: buffer, id: id })
+        this.whisper( id, { type: 'error', message: error, id: id })
     }
     sendHistory (id) {
         this.whisper( id, { type: 'history', message: buffer, id: id })
@@ -86,8 +86,8 @@ const myServer = new Server()
 
 let onData = (id,data) => {
 
-    console.log("===SERVER: ", id)
-    console.log("===DATA:", data)
+    // console.log("===SERVER: ", id)
+    // console.log("===DATA:", data)
     try {
         data = JSON.parse(data)
     }
@@ -145,14 +145,13 @@ module.exports = {
         buffer = []
 
         let my_sockjs = sockjs.createServer(
-            
-            {
-                log: (severity, message) => {
-                    console.log( '---- debug: ----')
-                    console.log( severity )
-                    console.log( message )
-                }
-            }
+            // {
+            //     log: (severity, message) => {
+            //         console.log( '---- debug: ----')
+            //         console.log( severity )
+            //         console.log( message )
+            //     }
+            // }
         )
 
         my_sockjs.installHandlers(http_server, {prefix:'/'+bound})
