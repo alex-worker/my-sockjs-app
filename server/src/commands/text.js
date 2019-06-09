@@ -23,7 +23,8 @@ function process(ctx){
 
 // пользователь не представился
     if ( !ctx.api.getUser(ctx.id) ) {
-        drop(id)
+        ctx.api.sendError(ctx.id, "don't say hello")
+        ctx.api.drop(ctx.id)
         return
     }
     ctx.api.say( ctx.id, ctx.data.message )

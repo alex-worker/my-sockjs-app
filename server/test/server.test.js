@@ -151,7 +151,7 @@ const test_send_illegal_json = async() => {
 
     let client = await new_promised_sockjs()
     try {
-    let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
+        let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
         assert.equal( resp.type,  'error')
         assert.equal( resp.message,  'param type is undefined')
     }
@@ -161,6 +161,9 @@ const test_send_illegal_json = async() => {
 
 }
 
+// -------------------------------------------------------------------------------------
+// посылаем сообщение с неподдерживаемой командой - должны получить сообщение об ошибке
+// -------------------------------------------------------------------------------------
 const test_send_illegal_command = async() => {
 
     let send_mess = {
@@ -169,7 +172,7 @@ const test_send_illegal_command = async() => {
 
     let client = await new_promised_sockjs()
     try {
-    let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
+        let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
         assert.equal( resp.type,  'error')
         assert.equal( resp.message,  'unsupported command illegal-COMMAND')
     }
@@ -179,43 +182,30 @@ const test_send_illegal_command = async() => {
 
 }
 
-const test_illegal_use = async() => {
-
-// -----------------------------------------------------------------------------
-// посылаем JSON неверного формата - должны получить сообщение об ошибке в JSON
-// -----------------------------------------------------------------------------
-    // send_mess = {
-    //     type: 'texkkt',
-    //     message: 'lold'
-    // }
-
-    // client = await new_promised_sockjs()
-    // try {
-    //     resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
-    //     assert.fail("Server don't close by exception!")
-    // }
-    // catch( e ){
-    //     assert.fail("Server exception done...")
-    // }
-    // assert.equal( resp.type,  'error')
-    // assert.equal( resp.message, 'data.type should be equal to one of the allowed values')
-
-// ----------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
 // пытаемся сказать ( type:text ) не представившись - должны получить обрубленное соединение
-// ----------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
+const test_say_without_hello = async() => {
 
-    // send_mess = {
-    //     type: 'text',
-    //     message: 'lold'
-    // }
+    let send_mess = {
+        type: 'text',
+        message: 'lold'
+    }
 
-    // try {
-    //     resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
-    //     assert.fail("Server must throw error!...")
-    // }
-    // catch( e ){ // должны выдать ошибку о закрытии соединения с сервером
-    //     assert.equal(e.type, 'close')
-    // }
+    let client = await new_promised_sockjs()
+    try {
+        let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
+        console.log( resp )
+        assert.equal( resp.type,  'error')
+        assert.equal( resp.message,  'don\'t say hello')
+    }
+    catch( e ){
+        assert.fail("Server exception done...")
+    }
+
+}
+
+const test_illegal_use = async() => {
     
 // ----------------------------------------------------------------------------------
 // пытаемся представиться пользователем которого нет
@@ -401,6 +391,7 @@ describe("Server", async function() {
         it('#test_send_lol',test_send_lol)
         it('#test_send_illegal_json',test_send_illegal_json)
         it('#test_send_illegal_command',test_send_illegal_command)
+        it('#test_say_without_hello',test_say_without_hello)
     })
     // it('addUser', async function() {
         // let res = await test_illegal_use()
