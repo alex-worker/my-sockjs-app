@@ -161,6 +161,24 @@ const test_send_illegal_json = async() => {
 
 }
 
+const test_send_illegal_command = async() => {
+
+    let send_mess = {
+        type: 'illegal-COMMAND',
+    }
+
+    let client = await new_promised_sockjs()
+    try {
+    let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
+        assert.equal( resp.type,  'error')
+        assert.equal( resp.message,  'unsupported command illegal-COMMAND')
+    }
+    catch( e ){
+        assert.fail("Server exception done...")
+    }
+
+}
+
 const test_illegal_use = async() => {
 
 // -----------------------------------------------------------------------------
@@ -382,6 +400,7 @@ describe("Server", async function() {
         it('#test_add_user',test_add_user)
         it('#test_send_lol',test_send_lol)
         it('#test_send_illegal_json',test_send_illegal_json)
+        it('#test_send_illegal_command',test_send_illegal_command)
     })
     // it('addUser', async function() {
         // let res = await test_illegal_use()
