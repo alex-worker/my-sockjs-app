@@ -22,6 +22,13 @@ function process( ctx ){
         return
     }
 
+    if( command!=='hello') // если пользователь не представился а что-то лепечет
+    if ( !ctx.api.getUser(ctx.id) ) {
+        ctx.api.sendError(ctx.id, "don't say hello")
+        ctx.api.drop(ctx.id)
+        return
+    }
+
     commands[command](ctx)
 
 }

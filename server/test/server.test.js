@@ -195,7 +195,7 @@ const test_say_without_hello = async() => {
     let client = await new_promised_sockjs()
     try {
         let resp = await send_promised_sockjs(client, JSON.stringify( send_mess ))
-        console.log( resp )
+        // console.log( resp )
         assert.equal( resp.type,  'error')
         assert.equal( resp.message,  'don\'t say hello')
     }
