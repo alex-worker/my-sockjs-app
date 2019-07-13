@@ -12,7 +12,7 @@
     "doc": "yarn jsdoc2md src/server.js"
   },
   "dependencies": {
-    "ajv": "^6.10.0",
+    "ajv": "^6.10.1",
     "sockjs": "^0.3.19",
     "uuid": "^3.3.2"
   },
